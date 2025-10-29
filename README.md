@@ -6,10 +6,15 @@ It’s built to promote healthy eating habits with a clean UI and accurate nutri
 # 🚀 Features
 
 🍽️ Meal Logging: Add and view meals with calorie and macro breakdowns.
+
 📊 Daily Summary: Track calories, protein, carbs, and fats consumed per day.
+
 🔍 Food Search: Search from a built-in or API-powered food database.
+
 📈 Progress Tracking: Visualize daily or weekly nutrition trends.
+
 👤 User Accounts: Register, log in, and securely save your data.
+
 ⚙️ Responsive Design: Fully mobile-friendly layout.
 
 # 🛠️ Tech Stack
