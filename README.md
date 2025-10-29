@@ -31,8 +31,8 @@ APIs	Nutrition API (API Ninjas)
 Auth	Django Authentication System
 
 # ⚙️ Installation & Setup
-1. Clone the repository
-
+### 1. Clone the repository
+```bash
 git clone https://github.com/<your-username>/right_portion.git
 cd right_portion
 
