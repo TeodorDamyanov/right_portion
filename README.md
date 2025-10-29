@@ -37,8 +37,8 @@ Clone repo: 'git clone https://github.com/TeodorDamyanov/right_portion.git'
 Change directory: 'cd right_portion'
 ## 2. Create and activate a virtual environment
 Create venv: 'python -m venv venv'
-### On Windows activate with: 'venv\Scripts\activate'
-### On Mac/Linux activate with: 'source venv/bin/activate'
+#### On Windows activate with: 'venv\Scripts\activate'
+#### On Mac/Linux activate with: 'source venv/bin/activate'
 ## 3. Install dependencies
 Install: 'pip install -r requirements.txt'
 ## 4. Run migrations
