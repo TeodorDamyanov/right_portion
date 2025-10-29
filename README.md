@@ -32,27 +32,22 @@ Auth	Django Authentication System
 
 # ⚙️ Installation & Setup
 ## 1. Clone the repository
-git clone https://github.com/<your-username>/right_portion.git
+Clone repo: git clone https://github.com/TeodorDamyanov/right_portion.git
 
-cd right_portion
+Change directory: cd right_portion
 ## 2. Create and activate a virtual environment
-python -m venv venv
+Create venv: python -m venv venv
 
-venv\Scripts\activate   # on Windows
+Activate with: venv\Scripts\activate   # on Windows
 
-or
-
-source venv/bin/activate   # on Mac/Linux
+Activate with: source venv/bin/activate   # on Mac/Linux
 ## 3. Install dependencies
-
-pip install -r requirements.txt
+Install: pip install -r requirements.txt
 ## 4. Run migrations
-
-python manage.py migrate
+Migrate: python manage.py migrate
 ## 5. Start the development server
-
-python manage.py runserver
-
+Run locally: python manage.py runserver
+## 6. Enjoy!
 Then open http://127.0.0.1:8000 in your browser 🎉
 
 <!-- 🧮 Example Features in Action -->
