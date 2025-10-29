@@ -31,33 +31,29 @@ APIs	Nutrition API (API Ninjas)
 Auth	Django Authentication System
 
 # ⚙️ Installation & Setup
-### 1. Clone the repository
-```bash
+## 1. Clone the repository
 git clone https://github.com/<your-username>/right_portion.git
+
 cd right_portion
-
-4. Create and activate a virtual environment
-
+## 2. Create and activate a virtual environment
 python -m venv venv
-venv\Scripts\activate   # on Windows
-or
-source venv/bin/activate   # on Mac/Linux
 
-6. Install dependencies
+venv\Scripts\activate   # on Windows
+
+or
+
+source venv/bin/activate   # on Mac/Linux
+## 3. Install dependencies
 
 pip install -r requirements.txt
-
-8. Run migrations
+## 4. Run migrations
 
 python manage.py migrate
-
-10. Start the development server
+## 5. Start the development server
 
 python manage.py runserver
 
-
-Then open http://127.0.0.1:8000
- in your browser 🎉
+Then open http://127.0.0.1:8000 in your browser 🎉
 
 <!-- 🧮 Example Features in Action -->
 <!-- Feature	Example -->
