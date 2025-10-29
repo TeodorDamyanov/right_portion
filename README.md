@@ -18,17 +18,16 @@ It’s built to promote healthy eating habits with a clean UI and accurate nutri
 ⚙️ Responsive Design: Fully mobile-friendly layout.
 
 # 🛠️ Tech Stack
-Layer	Technologies
 
-Frontend	HTML, CSS, JavaScript
+⚡ Frontend:	HTML, CSS, JavaScript
 
-Backend	Django (Python)
+🐍 Backend:	Django (Python)
 
-Database	PostgreSQL
+💻 Database:	PostgreSQL
 
-APIs	Nutrition API (API Ninjas)
+👨‍💻 APIs:	Nutrition API (API Ninjas)
 
-Auth	Django Authentication System
+🔍 Auth:	Django Authentication System
 
 # ⚙️ Installation & Setup
 ## 1. Clone the repository
