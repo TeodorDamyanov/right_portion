@@ -19,30 +19,44 @@ It’s built to promote healthy eating habits with a clean UI and accurate nutri
 
 # 🛠️ Tech Stack
 Layer	Technologies
+
 Frontend	HTML, CSS, JavaScript
+
 Backend	Django (Python)
+
 Database	PostgreSQL
+
 APIs	Nutrition API (API Ninjas)
+
 Auth	Django Authentication System
 
 # ⚙️ Installation & Setup
 1. Clone the repository
+
 git clone https://github.com/<your-username>/right_portion.git
+
 cd right_portion
 
-2. Create and activate a virtual environment
+4. Create and activate a virtual environment
+
 python -m venv venv
+
 venv\Scripts\activate   # on Windows
+
 or
+
 source venv/bin/activate   # on Mac/Linux
 
-3. Install dependencies
+6. Install dependencies
+
 pip install -r requirements.txt
 
-4. Run migrations
+8. Run migrations
+
 python manage.py migrate
 
-5. Start the development server
+10. Start the development server
+
 python manage.py runserver
 
 
@@ -70,6 +84,7 @@ Then open http://127.0.0.1:8000
 # 👨‍💻 Author
 
 Teodor Damyanov
+
 GitHub: @TeodorDamyanov
 
 # 🪪 License
