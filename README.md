@@ -34,17 +34,13 @@ Auth	Django Authentication System
 1. Clone the repository
 
 git clone https://github.com/<your-username>/right_portion.git
-
 cd right_portion
 
 4. Create and activate a virtual environment
 
 python -m venv venv
-
 venv\Scripts\activate   # on Windows
-
 or
-
 source venv/bin/activate   # on Mac/Linux
 
 6. Install dependencies
