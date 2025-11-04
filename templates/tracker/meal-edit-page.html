@@ -1,0 +1,61 @@
+{% extends 'base/base.html'%}
+{% block content %}
+    <style>
+        input[name$="-DELETE"] {
+            display: none;
+            
+        }
+    </style>
+    <div class="edit-deleteee edit-photo">
+        <h2>Edit {{ meal.name }}</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <h3>Foods in this meal</h3>
+
+            {{ formset.management_form }}
+            <div id="formset-container">
+                {% for mf_form in formset %}
+                  <div class="mealfood-form border p-2 mb-2 rounded">
+                    
+                    {{ mf_form.as_p }}
+
+                    <button type="button" class="remove-form btn btn-danger btn-sm">Remove</button>
+                  </div>
+                {% endfor %}
+            </div>
+
+            <button type="button" id="add-form" class="btn btn-secondary mt-2">Add Food</button>
+            <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let formIndex = $('#id_mealfood_set-TOTAL_FORMS').val();
+
+            // Add new form
+            $('#add-form').click(function() {
+                let newForm = $('.mealfood-form:first').clone(false);
+                newForm.find('input, select').each(function() {
+                    const name = $(this).attr('name').replace(/-\d+-/, '-' + formIndex + '-');
+                    const id = 'id_' + name;
+                    $(this).attr({'name': name, 'id': id}).val('');
+                    if ($(this).is(':checkbox')) $(this).prop('checked', false);
+                });
+                newForm.appendTo('#formset-container');
+                $('#id_mealfood_set-TOTAL_FORMS').val(++formIndex);
+            });
+
+            // Remove form
+            $(document).on('click', '.remove-form', function() {
+                const formDiv = $(this).closest('.mealfood-form');
+                formDiv.find('input[type=checkbox][name$="-DELETE"]').prop('checked', true); // mark for deletion
+                formDiv.hide(); // hide visually
+            });
+        });
+    </script>
+{% endblock %}

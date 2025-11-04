@@ -6,15 +6,20 @@ class MealForm(forms.ModelForm):
         model = Meal
         fields = ['name']
 
+class FoodForm(forms.ModelForm):
+    class Meta:
+        model = Food
+        fields = ['name', 'calories', 'protein', 'carbs', 'fats']
+
 class MealFoodForm(forms.ModelForm):
     class Meta:
         model = MealFood
         fields = ['food', 'quantity']
 
 MealFoodFormSet = forms.inlineformset_factory(
-    Meal,                # parent model
-    MealFood,            # child model
+    Meal,
+    MealFood,
     form=MealFoodForm,
-    extra=1,             # how many food fields to show by default
+    extra=1,
     can_delete=True
 )
