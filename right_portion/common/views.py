@@ -1,5 +1,37 @@
+from django.utils import timezone
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
-def home(request):
-    return render(request, 'base/base.html')
+from right_portion.tracker.models import Meal, Plan
+
+@login_required
+def dashboard(request):
+    today = timezone.localdate()
+    meals = Meal.objects.filter(user=request.user, date=today)
+    plan = Plan.objects.filter(user=request.user).first()
+
+
+    total_calories = 0
+    total_protein = 0
+    total_carbs = 0
+    total_fats = 0
+
+    for meal in meals:
+        for meal_food in meal.meal_foods.all():
+            total_calories += meal_food.total_calories
+            total_protein += meal_food.total_protein
+            total_carbs += meal_food.total_carbs
+            total_fats += meal_food.total_fats
+
+    context = {
+        'meals': meals,
+        'plan': plan,
+        'total_calories': round(total_calories, 1),
+        'total_protein': round(total_protein, 1),
+        'total_carbs': round(total_carbs, 1),
+        'total_fats': round(total_fats, 1),
+    }
+    return render(request, 'tracker/dashboard.html', context)
+
+def welcome(request):
+    return render(request, "base/welcome.html")

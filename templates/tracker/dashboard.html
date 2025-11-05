@@ -1,22 +1,8 @@
 {% extends "base/base.html" %}
 {% block content %}
-  <h1>🍽️ Your Foods</h1>
-  {% for food in foods %}
-    <p>{{ food.name }} — {{ food.calories }} kcal</p>
-    <p>{{ food.protein }} — protein</p>
-    <p>{{ food.carbs }} — carbs</p>
-    <p>{{ food.fats }} — fats</p>
-  {% empty %}
-    <p>No foods logged yet.</p>
-  {% endfor %}
-
-  <h1>🍽️ Your Meals</h1>
-  {% for meal in meals %}
-    <p>{{ meal.name }} — {{ meal.total_calories }} kcal</p>
-    <p>{{ meal.total_protein }} — protein</p>
-    <p>{{ meal.total_carbs }} — carbs</p>
-    <p>{{ meal.total_fats }} — fats</p>
-  {% empty %}
-    <p>No meals logged yet.</p>
-  {% endfor %}
+  <h2>Your day at a glance</h2>
+    <p>Calories: {{ total_calories }} / {{ plan.daily_calories }}</p>
+    <p>Total protein goal: {{ total_protein }} / {{ plan.protein_goal }}</p>
+    <p>Total carbs goal: {{ total_carbs }} / {{ plan.carbs_goal }}</p>
+    <p>Total fats goal: {{ total_fats }} / {{ plan.fats_goal }}</p>
 {% endblock %}

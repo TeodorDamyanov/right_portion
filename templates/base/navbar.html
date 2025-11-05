@@ -1,31 +1,53 @@
 <header>
     <nav class="navbar">
         <div class="container">
+            {% if request.user.is_authenticated %}
             <div class="logo">
-                <a class="home" href="#">
+                <a class="home" href="{% url 'dashboard' %}">
                     <i>Right Portion</i>
                 </a>
             </div>
 
             <div class="nav-links">
                 <ul class="nav-group">
+
                     <li class="nav-item">
-                        <a href="#">
+                        <a href="{% url 'add meal' %}">
                             <i>Add Meal</i>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#">
+                        <a href="{% url 'add food' %}">
                             <i>Add Food</i>
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#">
+                        <a href="{% url 'profile details' request.user.pk %}">
                             <i>Profile</i>
                         </a>
                     </li>
+
+                    {% else %}
+
+                    <div class="logo">
+                        <a class="home" href="{% url 'welcome' %}">
+                            <i>Right Portion</i>
+                        </a>
+                    </div>
+                        <li class="nav-item">
+                            <a href="{% url 'login user' %}">
+                                <i>Login</i>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{% url 'register user' %}">
+                                <i>Register</i>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

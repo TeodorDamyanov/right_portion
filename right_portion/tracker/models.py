@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.utils import timezone
 from right_portion import settings
 
 class Food(models.Model):

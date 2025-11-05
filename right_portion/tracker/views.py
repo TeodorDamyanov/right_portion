@@ -1,13 +1,8 @@
+from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Meal, MealFood, Food
+from .models import Meal, MealFood, Food, Plan
 from .forms import MealForm, MealFoodFormSet, FoodForm
-
-def dashboard(request):
-    foods = Food.objects.all # Food.objects.filter(user=request.user)
-    meals = Meal.objects.all
-    return render(request, "tracker/dashboard.html", {"foods": foods, "meals": meals})
-
 
 @login_required
 def add_meal(request):
@@ -39,7 +34,7 @@ def add_meal(request):
         'formset': formset,
     }
 
-    return render(request, 'tracker/add_meal.html', context)
+    return render(request, 'tracker/meal/add_meal.html', context)
 
 
 @login_required
@@ -68,7 +63,7 @@ def edit_meal(request, meal_slug):
         'meal': meal,
     }
 
-    return render(request, 'tracker/meal-edit-page.html', context)
+    return render(request, 'tracker/meal/meal-edit-page.html', context)
 
 
 @login_required
@@ -79,7 +74,7 @@ def delete_meal(request, meal_slug):
         meal.delete()
         return redirect('dashboard')
 
-    return render(request, 'tracker/meal-delete-page.html', {'meal': meal})
+    return render(request, 'tracker/meal/meal-delete-page.html', {'meal': meal})
 
 
 
@@ -92,7 +87,7 @@ def add_food(request):
         food.user = request.user
         food.save()
         return redirect('dashboard')
-    return render(request, 'tracker/food-add-page.html', {"form": form})
+    return render(request, 'tracker/food/add_food.html', {"form": form})
 
 
 @login_required
@@ -107,7 +102,7 @@ def edit_food(request, food_slug):
             form.save()
             return redirect('dashboard')
 
-    return render(request, 'tracker/food-edit-page.html', {"form": form})
+    return render(request, 'tracker/food/food-edit-page.html', {"form": form})
 
 
 @login_required
@@ -118,5 +113,5 @@ def delete_food(request, food_slug):
         food.delete()
         return redirect('dashboard')
 
-    return render(request, 'tracker/food-delete-page.html', {'food': food})
+    return render(request, 'tracker/food/food-delete-page.html', {'food': food})
 

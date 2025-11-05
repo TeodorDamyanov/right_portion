@@ -3,7 +3,7 @@
 {% block content %}
     <div class="edit-delete">
         <h2>Edit Profile</h2>
-        <form method="post" action="profile-edit-page.html">
+        <form method="post" action="{% url 'profile edit' user.pk %}">
             {{ form }}
             {% csrf_token %}
 

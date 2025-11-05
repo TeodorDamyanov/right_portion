@@ -25,9 +25,14 @@
                           <img class="edit-img" src="{% static 'images/edit-pen-icon-6.jpg' %}" alt="edit button">
                       </a>
 
-                    <a href="{% url 'profile delete' rpuser.pk %}">
-                        <img class="bin-img" src="{% static 'images/icon-remove-22.jpg' %}" alt="bin button">
-                    </a>
+                        <a href="{% url 'profile delete' rpuser.pk %}">
+                            <img class="bin-img" src="{% static 'images/icon-remove-22.jpg' %}" alt="bin button">
+                        </a>
+
+                        <form action="{% url 'logout user' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Logout</button>
+                        </form>
                     {% endif %}
 
                 </div>

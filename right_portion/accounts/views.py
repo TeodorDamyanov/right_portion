@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import generic as views
 from django.urls import reverse_lazy
 from django.contrib.auth import views as auth_views
@@ -12,17 +12,17 @@ class UserRegisterView(views.CreateView):
     model = RPUser
     form_class = RPUserCreateForm
     template_name = 'accounts/register_page.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('dashboard')
 
 
 class UserLoginView(auth_views.LoginView):
     form_class = LoginForm
     template_name = 'accounts/login-page.html'
-    next_page = reverse_lazy('index')
+    next_page = reverse_lazy('dashboard')
 
 
 class UserLogoutView(auth_views.LogoutView):
-    next_page = reverse_lazy('index')
+    next_page = reverse_lazy('welcome')
 
 
 class UserEditView(views.UpdateView):
@@ -58,7 +58,8 @@ class UserDetailsView(views.DetailView):
 class UserDeleteView(views.DeleteView):
     model = RPUser
     template_name = 'accounts/profile-delete-page.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('welcome')
 
     def post(self, *args, pk):
         self.request.user.delete()
+        return redirect(self.success_url)
