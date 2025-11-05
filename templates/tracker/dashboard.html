@@ -5,4 +5,20 @@
     <p>Total protein goal: {{ total_protein }} / {{ plan.protein_goal }}</p>
     <p>Total carbs goal: {{ total_carbs }} / {{ plan.carbs_goal }}</p>
     <p>Total fats goal: {{ total_fats }} / {{ plan.fats_goal }}</p>
+
+    <h3>Meals:</h3>
+    {% for m in meals %}
+    <p>{{ m.name }}</p>
+    <p>Includes:</p>
+      {% for mf in m.meal_foods.all %}
+        <p>{{ mf.food.name }} - {{ mf.quantity }} grams</p>
+        <a href="{% url 'food edit' mf.food.slug %}" >Edit Food</a>
+        <a href="{% url 'food delete' mf.food.slug %}" >Delete Food</a>
+      {% empty %}
+        <p>No foods added to this meal yet.</p>
+      {% endfor %}
+      <p>A total of {{ total_calories }} calories</p>
+      <a href="{% url 'meal edit' m.slug %}" >Edit Meal</a>
+      <a href="{% url 'meal delete' m.slug %}" >Delete Meal</a>
+    {% endfor %}
 {% endblock %}

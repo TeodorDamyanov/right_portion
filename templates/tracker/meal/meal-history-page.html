@@ -1,0 +1,37 @@
+{% extends "base/base.html" %}
+{% block content %}
+<h2>Your Meal History</h2>
+
+{% if history %}
+
+    <form method="get">
+        <input type="date" name="date" value="{{ request.GET.date }}">
+        <button type="submit">Filter</button>
+    </form>
+  {% for date, meals in history.items %}
+    <div class="day-history">
+      <h3>{{ date }}</h3>
+      <ul>
+        {% for meal in meals %}
+          <li>
+            <strong>{{ meal.name }}</strong>
+            (<a href="{% url 'meal edit' meal.slug %}">Edit</a> |
+             <a href="{% url 'meal delete' meal.slug %}">Delete</a>)
+            <ul>
+              {% for mf in meal.meal_foods.all %}
+                <li>
+                  {{ mf.food.name }} – {{ mf.quantity }}g  
+                  ({{ mf.total_calories|floatformat:0 }} kcal)
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>No meal history yet.</p>
+{% endif %}
+
+{% endblock %}

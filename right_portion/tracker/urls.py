@@ -7,6 +7,6 @@ urlpatterns = [
     path('delete/<slug:meal_slug>/', views.delete_meal, name="meal delete"),
 
     path('add_food/', views.add_food, name="add food"),
-    path('edit/<slug:food_slug>/', views.edit_food, name="food edit"),
-    path('delete/<slug:food_slug>/', views.delete_food, name="food delete"),
+    path('edit/f/<slug:food_slug>/', views.edit_food, name="food edit"),
+    path('delete/f/<slug:food_slug>/', views.delete_food, name="food delete"),
 ]

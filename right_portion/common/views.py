@@ -1,8 +1,8 @@
 from django.utils import timezone
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
-from right_portion.tracker.models import Meal, Plan
+from right_portion.tracker.models import Meal, MealFood, Plan
 
 @login_required
 def dashboard(request):
@@ -33,5 +33,26 @@ def dashboard(request):
     }
     return render(request, 'tracker/dashboard.html', context)
 
-def welcome(request):
-    return render(request, "base/welcome.html")
+
+def index(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return render(request, 'base/welcome.html')
+
+
+@login_required
+def meal_history(request):
+    meals = Meal.objects.filter(user=request.user).order_by('-date')
+    selected_date = request.GET.get('date')
+    if selected_date:
+        meals = meals.filter(date=selected_date)
+
+
+    history = {}
+    for meal in meals:
+        history.setdefault(meal.date, []).append(meal)
+
+    context = {
+        'history': history,
+    }
+    return render(request, 'tracker/meal/meal-history-page.html', context)
