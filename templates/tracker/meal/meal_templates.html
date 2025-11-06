@@ -1,0 +1,5 @@
+<h2>My Meal Templates</h2>
+{% for t in templates %}
+  <p>{{ t.name }}</p>
+  <a href="{% url 'add meal from template' t.id %}" class="btn btn-success">Add to Today</a>
+{% endfor %}

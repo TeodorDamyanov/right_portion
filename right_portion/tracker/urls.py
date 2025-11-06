@@ -9,4 +9,9 @@ urlpatterns = [
     path('add_food/', views.add_food, name="add food"),
     path('edit/f/<slug:food_slug>/', views.edit_food, name="food edit"),
     path('delete/f/<slug:food_slug>/', views.delete_food, name="food delete"),
+
+    path('meal/<slug:meal_slug>/save-template/', views.save_meal_as_template, name='save meal as template'),
+    path('templates/', views.meal_templates, name='templates'),
+    path('templates/add/<int:template_id>/', views.add_meal_from_template, name='add meal from template'),
+
 ]

@@ -20,5 +20,7 @@
       <p>A total of {{ total_calories }} calories</p>
       <a href="{% url 'meal edit' m.slug %}" >Edit Meal</a>
       <a href="{% url 'meal delete' m.slug %}" >Delete Meal</a>
+      <a href="{% url 'save meal as template' m.slug %}" class="btn btn-secondary">Save as Template</a>
     {% endfor %}
+    <a href="{% url 'templates' %}" >All Templates</a>
 {% endblock %}

@@ -90,3 +90,20 @@ class MealFood(models.Model):
     def __str__(self):
         return f"{self.food.name} ({self.quantity}g in {self.meal.name})"
 
+
+class MealTemplate(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.name} (Template)"
+
+
+class MealTemplateFood(models.Model):
+    meal_template = models.ForeignKey(MealTemplate, on_delete=models.CASCADE, related_name="template_foods")
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    quantity = models.FloatField(help_text="In grams")
+
+    @property
+    def total_calories(self):
+        return self.food.calories * self.quantity / 100

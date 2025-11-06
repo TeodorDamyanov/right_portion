@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Meal, MealFood, Food, Plan
+from .models import Meal, MealFood, Food, MealTemplate, MealTemplateFood, Plan
 from .forms import MealForm, MealFoodFormSet, FoodForm
 
 @login_required
@@ -115,3 +115,37 @@ def delete_food(request, food_slug):
 
     return render(request, 'tracker/food/food-delete-page.html', {'food': food})
 
+
+@login_required
+def save_meal_as_template(request, meal_slug):
+    meal = Meal.objects.get(slug=meal_slug)
+
+    template = MealTemplate.objects.create(user=request.user, name=meal.name)
+
+    for meal_food in meal.meal_foods.all():
+        MealTemplateFood.objects.create(
+            meal_template=template,
+            food=meal_food.food,
+            quantity=meal_food.quantity
+        )
+
+    return redirect('dashboard')
+
+@login_required
+def add_meal_from_template(request, template_id):
+    template = MealTemplate.objects.get(id=template_id, user=request.user)
+    meal = Meal.objects.create(user=request.user, name=template.name)
+
+    for t_food in template.template_foods.all():
+        MealFood.objects.create(
+            meal=meal,
+            food=t_food.food,
+            quantity=t_food.quantity
+        )
+
+    return redirect('dashboard')
+
+@login_required
+def meal_templates(request):
+    templates = MealTemplate.objects.filter(user=request.user)
+    return render(request, 'tracker/meal/meal_templates.html', {'templates': templates})
