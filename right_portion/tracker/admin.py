@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Food, Meal, Plan
+from .models import Food, Meal, MealTemplate, Plan
 
 @admin.register(Food)
 class FoodAdmin(admin.ModelAdmin):
@@ -16,7 +16,7 @@ class PlanAdmin(admin.ModelAdmin):
     list_display = ('user', 'num_days', 'daily_calories')
     search_fields = ['user']
 
-@admin.register(Plan)
+@admin.register(MealTemplate)
 class TemplateAdmin(admin.ModelAdmin):
     list_display = ('user', 'name')
     search_fields = ['name']
