@@ -23,6 +23,9 @@ def dashboard(request):
             total_carbs += meal_food.total_carbs
             total_fats += meal_food.total_fats
 
+    def percent(current, goal):
+        return round((current / goal) * 100, 1)
+
     context = {
         'meals': meals,
         'plan': plan,
@@ -30,6 +33,11 @@ def dashboard(request):
         'total_protein': round(total_protein, 1),
         'total_carbs': round(total_carbs, 1),
         'total_fats': round(total_fats, 1),
+
+        'calories_percent': percent(total_calories, plan.daily_calories),
+        'protein_percent': percent(total_protein, plan.protein_goal),
+        'carbs_percent': percent(total_carbs, plan.carbs_goal),
+        'fats_percent': percent(total_fats, plan.fats_goal),
     }
     return render(request, 'tracker/dashboard.html', context)
 
