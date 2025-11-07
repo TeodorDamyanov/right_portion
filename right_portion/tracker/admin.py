@@ -15,3 +15,8 @@ class MealAdmin(admin.ModelAdmin):
 class PlanAdmin(admin.ModelAdmin):
     list_display = ('user', 'num_days', 'daily_calories')
     search_fields = ['user']
+
+@admin.register(Plan)
+class TemplateAdmin(admin.ModelAdmin):
+    list_display = ('user', 'name')
+    search_fields = ['name']
