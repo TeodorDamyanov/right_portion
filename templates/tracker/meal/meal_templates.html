@@ -1,5 +1,12 @@
+{% extends "base/base.html" %}
+{% block content %}
 <h2>My Meal Templates</h2>
 {% for t in templates %}
   <p>{{ t.name }}</p>
-  <a href="{% url 'add meal from template' t.id %}" class="btn btn-success">Add to Today</a>
+  <form method="post" action="{% url 'add meal from template' t.id %}">
+    {% csrf_token %}
+    <button type="submit">Add to Today</button>
+  </form>
+  <a href="{% url 'delete meal template' t.id %}">Delete Template</a>
 {% endfor %}
+{% endblock %}

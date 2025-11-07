@@ -12,8 +12,7 @@
     <p>Includes:</p>
       {% for mf in m.meal_foods.all %}
         <p>{{ mf.food.name }} - {{ mf.quantity }} grams</p>
-        <a href="{% url 'food edit' mf.food.slug %}" >Edit Food</a>
-        <a href="{% url 'food delete' mf.food.slug %}" >Delete Food</a>
+        <a href="{% url 'food details' mf.food.slug %}" >Food Details</a>
       {% empty %}
         <p>No foods added to this meal yet.</p>
       {% endfor %}

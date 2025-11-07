@@ -18,13 +18,6 @@ def add_meal(request):
             formset.save()
             return redirect("dashboard")
 
-            # meal_foods = formset.save(commit=False)
-            # for mf in meal_foods:
-            #     mf.meal = meal
-            #     mf.save()
-
-            # return redirect("tracker:meal_list")
-
     else:
         form = MealForm()
         formset = MealFoodFormSet()
@@ -35,6 +28,16 @@ def add_meal(request):
     }
 
     return render(request, 'tracker/meal/add_meal.html', context)
+
+@login_required
+def food_details(request, food_slug):
+    food = Food.objects.filter(slug=food_slug).first()
+
+    context = {
+        "food": food,
+    }
+
+    return render(request, 'tracker/food/food-details-page.html', context)
 
 
 @login_required
@@ -134,10 +137,20 @@ def save_meal_as_template(request, meal_slug):
 @login_required
 def add_meal_from_template(request, template_id):
     template = MealTemplate.objects.get(id=template_id, user=request.user)
-    meal = Meal.objects.create(user=request.user, name=template.name)
 
-    for t_food in template.template_foods.all():
-        MealFood.objects.create(
+    if request.method == "POST":
+        meal = Meal(
+            user=request.user,
+            name=template.name,
+            date=timezone.now().date()
+        )
+        
+        meal.pk = None
+        meal.id = None
+        meal.save()
+
+        for t_food in template.template_foods.all():
+            MealFood.objects.create(
             meal=meal,
             food=t_food.food,
             quantity=t_food.quantity
@@ -149,3 +162,12 @@ def add_meal_from_template(request, template_id):
 def meal_templates(request):
     templates = MealTemplate.objects.filter(user=request.user)
     return render(request, 'tracker/meal/meal_templates.html', {'templates': templates})
+
+@login_required
+def delete_meal_template(request, template_id):
+    template = MealTemplate.objects.filter(id=template_id).first()
+    if request.method == 'POST':
+        template.delete()
+        return redirect('templates')
+
+    return render(request, 'tracker/meal/meal-template-delete-page.html', {'template': template})
