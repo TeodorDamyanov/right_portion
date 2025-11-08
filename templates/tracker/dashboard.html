@@ -1,10 +1,35 @@
 {% extends "base/base.html" %}
+{% load static %}
+{% load color_mess_filters %}
 {% block content %}
   <h2>Your day at a glance</h2>
-    <p>Calories: {{ total_calories }} / {{ plan.daily_calories }}</p>
-    <p>Total protein goal: {{ total_protein }} / {{ plan.protein_goal }}</p>
-    <p>Total carbs goal: {{ total_carbs }} / {{ plan.carbs_goal }}</p>
-    <p>Total fats goal: {{ total_fats }} / {{ plan.fats_goal }}</p>
+
+    <div class="dashboard-charts" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(15em, 15em)); gap:4em; align-items:start; margin-bottom: 30px;">
+
+    <div class="card p-3">
+      <h3>Calories {{ total_calories }} / {{ plan.daily_calories|default:"–" }} kcal</h3>
+      <canvas id="calorieChart"></canvas>
+      <h4>{{ calories_percent|message_perc }}</h4>
+    </div>
+
+    <div class="card p-3">
+      <h3>Protein {{ total_protein }} / {{ plan.protein_goal|default:"–" }} g</h3>
+      <canvas id="proteinChart"></canvas>
+      <h4>{{ protein_percent|message_perc }}</h4>
+    </div>
+
+    <div class="card p-3">
+      <h3>Carbs {{ total_carbs }} / {{ plan.carbs_goal|default:"–" }} g</h3>
+      <canvas id="carbsChart"></canvas>
+      <h4>{{ carbs_percent|message_perc }}</h4>
+    </div>
+
+    <div class="card p-3">
+      <h3>Fats {{ total_fats }} / {{ plan.fats_goal|default:"–" }} g</h3>
+      <canvas id="fatsChart"></canvas>
+      <h4>{{ fats_percent|message_perc }}</h4>
+    </div>
+  </div>
 
     <h3>Meals:</h3>
     {% for m in meals %}
@@ -16,10 +41,38 @@
       {% empty %}
         <p>No foods added to this meal yet.</p>
       {% endfor %}
-      <p>A total of {{ total_calories }} calories</p>
+      <p>A total of {{ m.total_calories }} calories</p>
       <a href="{% url 'meal edit' m.slug %}" >Edit Meal</a>
       <a href="{% url 'meal delete' m.slug %}" >Delete Meal</a>
       <a href="{% url 'save meal as template' m.slug %}" class="btn btn-secondary">Save as Template</a>
     {% endfor %}
     <a href="{% url 'templates' %}" >All Templates</a>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="{% static 'tracker/js/dashboard-charts.js' %}"></script>
+
+  <script>
+    window.dashboardData = {
+      totalCalories: {{ total_calories|default:0 }},
+      calorieGoal: {{ plan.daily_calories|default:0 }},
+      caloriePercent: {{ calories_percent|default:0 }},
+
+      totalProtein: {{ total_protein|default:0 }},
+      proteinGoal: {{ plan.protein_goal|default:0 }},
+      proteinPercent: {{ protein_percent|default:0 }},
+
+      totalCarbs: {{ total_carbs|default:0 }},
+      carbsGoal: {{ plan.carbs_goal|default:0 }},
+      carbsPercent: {{ carbs_percent|default:0 }},
+
+      totalFats: {{ total_fats|default:0 }},
+      fatsGoal: {{ plan.fats_goal|default:0 }},
+      fatsPercent: {{ fats_percent|default:0 }},
+
+      caloriesBackColor: "{{ calories_percent|color_chart }}",
+      proteinBackColor: "{{ protein_percent|color_chart }}",
+      carbsBackColor: "{{ carbs_percent|color_chart }}",
+      fatsBackColor: "{{ fats_percent|color_chart }}",
+    };
+  </script>
 {% endblock %}
