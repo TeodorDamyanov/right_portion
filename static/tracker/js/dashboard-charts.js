@@ -30,7 +30,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let daily = goal - current
     if (goal - current < 0) {
-        daily = 0
+      daily = 0
+    }
+
+    let secColor = "#5fbba1ff"
+    if (backColor == "#B7B7B7") {
+      secColor = "#B7B7B7"
     }
 
     new Chart(chart, {
@@ -41,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
           {
             data: [current, daily],
             borderWidth: 0,
-            backgroundColor: [backColor, "#5fbba1ff"],
+            backgroundColor: [backColor, secColor],
           },
         ],
       },
