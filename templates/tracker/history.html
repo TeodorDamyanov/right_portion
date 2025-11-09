@@ -6,7 +6,7 @@
     <a href="{% url 'day_history' item.date %}" class="history-card">
       <div>
         <strong>{{ item.date }}</strong><br>
-        {{ item.total_calories }} kcal
+        {{ item.total_calories|floatformat:0 }} kcal
       </div>
     </a>
   {% empty %}

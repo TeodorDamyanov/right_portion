@@ -1,7 +1,7 @@
 from django.utils import timezone
 from datetime import timedelta
 from collections import defaultdict
-from django.db.models import Sum
+from django.db.models import F, Sum, FloatField, ExpressionWrapper
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
@@ -10,16 +10,24 @@ from right_portion.tracker.models import Meal, MealFood, Plan
 @login_required
 def dashboard(request):
     today = timezone.localdate()
+    print(today)
     week_ago = today - timedelta(days=6)
     recent_meals = Meal.objects.filter(user=request.user, date__range=[week_ago, today])
 
-    todays_meals = Meal.objects.filter(user=request.user, date=today)
+    meals = Meal.objects.filter(user=request.user, date=today)
     plan = Plan.objects.filter(user=request.user).first()
 
     meals_by_day = (
         recent_meals
-        .values('date')
-        .annotate(total_calories=Sum('meal_foods__food__calories'))
+        .values("date")
+        .annotate(
+            total_calories=Sum(
+                ExpressionWrapper(
+                    F("meal_foods__quantity") * F("meal_foods__food__calories") / 100,
+                    output_field=FloatField(),
+                )
+            )
+        )
     )
 
     if meals_by_day:
@@ -39,7 +47,7 @@ def dashboard(request):
     total_carbs = 0
     total_fats = 0
 
-    for meal in todays_meals:
+    for meal in meals:
         for meal_food in meal.meal_foods.all():
             total_calories += meal_food.total_calories
             total_protein += meal_food.total_protein
@@ -50,7 +58,7 @@ def dashboard(request):
         return round((current / goal) * 100, 1)
 
     context = {
-        'meals': todays_meals,
+        'meals': meals,
         'plan': plan,
 
         "avg_calories": round(avg_calories),
@@ -92,7 +100,14 @@ def history(request):
     daily_data = (
         Meal.objects.filter(user=user)
         .values("date")
-        .annotate(total_calories=Sum("meal_foods__food__calories"))
+        .annotate(
+            total_calories=Sum(
+                ExpressionWrapper(
+                    F("meal_foods__quantity") * F("meal_foods__food__calories") / 100,
+                    output_field=FloatField(),
+                )
+            )
+        )
         .order_by("-date")
     )
 

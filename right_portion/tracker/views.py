@@ -89,7 +89,8 @@ def add_food(request):
         food = form.save(commit=False)
         food.user = request.user
         food.save()
-        return redirect('dashboard')
+        next_url = request.GET.get('next', 'dashboard')
+        return redirect(next_url)
     return render(request, 'tracker/food/add_food.html', {"form": form})
 
 
@@ -103,7 +104,8 @@ def edit_food(request, food_slug):
         form = FoodForm(request.POST, instance=food)
         if form.is_valid():
             form.save()
-            return redirect('dashboard')
+            next_url = request.GET.get('next', 'dashboard')
+            return redirect(next_url)
 
     return render(request, 'tracker/food/food-edit-page.html', {"form": form})
 

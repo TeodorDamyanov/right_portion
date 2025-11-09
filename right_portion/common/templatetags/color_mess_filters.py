@@ -25,4 +25,4 @@ def message_perc(percent):
     elif percent <= 110.0:
         return f"Exceeded by {percent - 100:.1f}%!"
     else:
-        return f"Exceeded by too much - {percent - 100:.1f}%!!"
+        return f"Exceeded too much - {percent:.1f}%!!"
