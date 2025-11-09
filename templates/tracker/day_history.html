@@ -1,0 +1,14 @@
+{% extends "base/base.html" %}
+{% block content %}
+<h2>🍽 Meals for {{ day }}</h2>
+
+<a href="{% url 'history' %}">← Back to history</a>
+
+<ul>
+  {% for meal in meals %}
+    <li>{{ meal.name }} - {{ meal.total_calories }} kcal</li>
+  {% empty %}
+    <p>No meals logged this day.</p>
+  {% endfor %}
+</ul>
+{% endblock %}

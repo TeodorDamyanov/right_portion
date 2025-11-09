@@ -1,4 +1,7 @@
 from django.utils import timezone
+from datetime import timedelta
+from collections import defaultdict
+from django.db.models import Sum
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
@@ -7,8 +10,28 @@ from right_portion.tracker.models import Meal, MealFood, Plan
 @login_required
 def dashboard(request):
     today = timezone.localdate()
-    meals = Meal.objects.filter(user=request.user, date=today)
+    week_ago = today - timedelta(days=6)
+    recent_meals = Meal.objects.filter(user=request.user, date__range=[week_ago, today])
+
+    todays_meals = Meal.objects.filter(user=request.user, date=today)
     plan = Plan.objects.filter(user=request.user).first()
+
+    meals_by_day = (
+        recent_meals
+        .values('date')
+        .annotate(total_calories=Sum('meal_foods__food__calories'))
+    )
+
+    if meals_by_day:
+        avg_calories = sum(m['total_calories'] for m in meals_by_day) / len(meals_by_day)
+    else:
+        avg_calories = 0
+
+    streak = 0
+    day = today
+    while Meal.objects.filter(user=request.user, date=day).exists():
+        streak += 1
+        day -= timedelta(days=1)
 
 
     total_calories = 0
@@ -16,7 +39,7 @@ def dashboard(request):
     total_carbs = 0
     total_fats = 0
 
-    for meal in meals:
+    for meal in todays_meals:
         for meal_food in meal.meal_foods.all():
             total_calories += meal_food.total_calories
             total_protein += meal_food.total_protein
@@ -27,8 +50,12 @@ def dashboard(request):
         return round((current / goal) * 100, 1)
 
     context = {
-        'meals': meals,
+        'meals': todays_meals,
         'plan': plan,
+
+        "avg_calories": round(avg_calories),
+        "streak": streak,
+
         'total_calories': round(total_calories, 1),
         'total_protein': round(total_protein, 1),
         'total_carbs': round(total_carbs, 1),
@@ -49,18 +76,36 @@ def index(request):
 
 
 @login_required
-def meal_history(request):
-    meals = Meal.objects.filter(user=request.user).order_by('-date')
-    selected_date = request.GET.get('date')
-    if selected_date:
-        meals = meals.filter(date=selected_date)
+def history(request):
+    user = request.user
+    meals = Meal.objects.filter(user=user).order_by("-date")
 
-
-    history = {}
+    daily_data = defaultdict(int)
     for meal in meals:
-        history.setdefault(meal.date, []).append(meal)
+        daily_data[meal.date] += meal.total_calories
 
-    context = {
-        'history': history,
-    }
-    return render(request, 'tracker/meal/meal-history-page.html', context)
+    daily_data = [
+        {"date": day, "total_calories": total}
+        for day, total in sorted(daily_data.items(), reverse=True)
+    ]
+
+    daily_data = (
+        Meal.objects.filter(user=user)
+        .values("date")
+        .annotate(total_calories=Sum("meal_foods__food__calories"))
+        .order_by("-date")
+    )
+
+    return render(request, "tracker/history.html", {
+        "daily_data": daily_data,
+    })
+
+
+@login_required
+def day_history(request, day):
+    user = request.user
+    meals = Meal.objects.filter(user=user, date=day).order_by("-id")
+    return render(request, "tracker/day_history.html", {
+        "meals": meals,
+        "day": day,
+    })

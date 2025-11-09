@@ -15,8 +15,6 @@
         {% for meal in meals %}
           <li>
             <strong>{{ meal.name }}</strong>
-            (<a href="{% url 'meal edit' meal.slug %}">Edit</a> |
-             <a href="{% url 'meal delete' meal.slug %}">Delete</a>)
             <ul>
               {% for mf in meal.meal_foods.all %}
                 <li>

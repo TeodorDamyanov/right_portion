@@ -31,6 +31,17 @@
     </div>
   </div>
 
+  <h3>Weekly Summary</h3>
+  <p>Average daily calories (last 7 days): <strong>{{ avg_calories }}</strong></p>
+
+    {% if streak > 1 %}
+      <p>🔥 You’ve logged meals <strong>{{ streak }}</strong> days in a row!</p>
+    {% elif streak == 1 %}
+      <p>✅ You logged meals today!</p>
+    {% else %}
+      <p>📅 Start logging meals to build your streak!</p>
+    {% endif %}
+
     <h3>Meals:</h3>
     {% for m in meals %}
     <p>{{ m.name }}</p>

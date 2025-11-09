@@ -1,0 +1,16 @@
+{% extends "base/base.html" %}
+{% block content %}
+<h2>📅 Your Meal History</h2>
+<div class="history-container">
+  {% for item in daily_data %}
+    <a href="{% url 'day_history' item.date %}" class="history-card">
+      <div>
+        <strong>{{ item.date }}</strong><br>
+        {{ item.total_calories }} kcal
+      </div>
+    </a>
+  {% empty %}
+    <p>No meals logged yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}
