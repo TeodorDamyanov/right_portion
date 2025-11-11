@@ -1,7 +1,7 @@
 from django.utils import timezone
 from datetime import timedelta
 from collections import defaultdict
-from django.db.models import F, Sum, FloatField, ExpressionWrapper
+from django.db.models import F, Sum, Count, FloatField, ExpressionWrapper
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
@@ -28,6 +28,22 @@ def dashboard(request):
                 )
             )
         )
+    )
+
+    top_foods = (
+        MealFood.objects
+        .filter(meal__user=request.user, meal__date__range=[week_ago, today])
+        .values('food__name')
+        .annotate(times_used=Count('id'))
+        .order_by('-times_used')[:5]
+    )
+
+    top_meals = (
+        MealFood.objects
+        .filter(meal__user=request.user, meal__date__range=[week_ago, today])
+        .values('meal__name')
+        .annotate(times_used=Count('id'))
+        .order_by('-times_used')[:5]
     )
 
     if meals_by_day:
@@ -62,6 +78,8 @@ def dashboard(request):
         'plan': plan,
 
         "avg_calories": round(avg_calories),
+        'top_foods': top_foods,
+        'top_meals': top_meals,
         "streak": streak,
 
         'total_calories': round(total_calories, 1),

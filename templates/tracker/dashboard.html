@@ -59,6 +59,32 @@
     {% endfor %}
     <a href="{% url 'templates' %}" >All Templates</a>
 
+    <div>
+      <h3>Top Foods</h3>
+      {% if top_foods %}
+        <ul>
+          {% for food in top_foods %}
+            <li>{{ food.food__name }} – {{ food.times_used }} time{{ food.times_used|pluralize }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No foods logged yet this week.</p>
+      {% endif %}
+    </div>
+
+    <div>
+      <h3>Top Meals</h3>
+      {% if top_meals %}
+        <ul>
+          {% for meal in top_meals %}
+            <li>{{ meal.meal__name }} – {{ meal.times_used }} time{{ meal.times_used|pluralize }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No meals logged yet this week.</p>
+      {% endif %}
+    </div>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="{% static 'tracker/js/dashboard-charts.js' %}"></script>
 

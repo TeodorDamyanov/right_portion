@@ -9,11 +9,11 @@
             <div class="profile_img">
                 <div class="image">
 
-                    {% if rpuser.profile_picture %}
+                    {% comment %} {% if rpuser.profile_picture %}
                         <img src="{{ rpuser.profile_picture }}" alt="img8">
                     {% else %}
                         <img src="{% static 'images/user.png' %}" alt="img8">
-                    {% endif %}
+                    {% endif %} {% endcomment %}
                 </div>
             </div>
             <div class="personal">
@@ -21,13 +21,9 @@
                     <p>{{ rpuser.username }}</p>
 
                     {% if request.user.email == rpuser.email %}
-                      <a href="{% url 'profile edit' rpuser.pk %}">
-                          <img class="edit-img" src="{% static 'images/edit-pen-icon-6.jpg' %}" alt="edit button">
-                      </a>
+                        <a href="{% url 'profile edit' rpuser.pk %}">Edit Profile</a>
 
-                        <a href="{% url 'profile delete' rpuser.pk %}">
-                            <img class="bin-img" src="{% static 'images/icon-remove-22.jpg' %}" alt="bin button">
-                        </a>
+                        <a href="{% url 'profile delete' rpuser.pk %}">Delete Profile</a>
 
                         <form action="{% url 'logout user' %}" method="post">
                             {% csrf_token %}
@@ -37,37 +33,28 @@
 
                 </div>
                 <div class="data">
-
-                    <span>{{ foods.count }}</span>
-                    <p>total foods</p>
+                    <p>Total Meals: <strong>{{ meals.count }}</strong></p>
+                    <p class="email">{{ rpuser.email }}</p>
                 </div>
-                <h3 class="names">{{ rpuser.full_name }}</h3>
-
-                <p class="email">{{ rpuser.email }}</p>
-
             </div>
         </div>
 
 
         <div class="pet-photos">
             {% if page_obj.object_list %}
-                {% for food in page_obj.object_list %}
-                <a href="{% url 'food details' food.slug %}">
-                    <img src="{{ food.photo.url }}"
-                        alt="food img">
-                </a>
+                {% for meal in page_obj.object_list %}
+                    {{ meal.name }}
+                    <p></p>
             {% endfor %}
             {% else %}
-                <h2 style="position: absolute; left: 940px; top: 360px; font-family: 'Elephant', cursive">
-                    No Foods!
-                </h2>
+                <h2>No Meals!</h2>
             {% endif %}
 
             <div class="pagination">
                     <span class="step-links">
                         {% if page_obj.has_previous %}
-                            <a href="?page=1">&laquo; first</a>
-                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                            <a href="?page=1"><strong>&laquo;1</strong></a>
+                            <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
                         {% endif %}
 
                         <span class="current">
@@ -75,9 +62,8 @@
                         </span>
 
                         {% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}">next</a>
-                            <a href="?page={{ page_obj.paginator.num_pages }}">last
-&raquo;</a>
+                            <a href="?page={{ page_obj.next_page_number }}">>>></a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}"><strong>{{ page_obj.paginator.num_pages }}&raquo;</strong></a>
                         {% endif %}
                     </span>
             </div>

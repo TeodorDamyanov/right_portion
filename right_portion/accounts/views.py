@@ -38,21 +38,21 @@ class UserDetailsView(views.DetailView):
     template_name = 'accounts/profile-details-page.html'
     model = RPUser
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     foods = self.object.food_set.all()
-    #     paginator = Paginator(foods, 2)
-    #     page_num = self.request.GET.get('page') or 1
-    #     page_obj = paginator.get_page(page_num)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        meals = self.object.meal_set.all()
+        paginator = Paginator(meals, 3)
+        page_num = self.request.GET.get('page') or 1
+        page_obj = paginator.get_page(page_num)
 
-    #     context.update({
-    #         "paginator": paginator,
-    #         "page_num": page_num,
-    #         "page_obj": page_obj,
-    #         "foods": foods
-    #     })
+        context.update({
+            "paginator": paginator,
+            "page_num": page_num,
+            "page_obj": page_obj,
+            "meals": meals
+        })
 
-    #     return context
+        return context
 
 
 class UserDeleteView(views.DeleteView):
