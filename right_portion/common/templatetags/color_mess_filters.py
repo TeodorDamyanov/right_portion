@@ -6,7 +6,7 @@ def color_chart(percent):
         if not percent:
             color = "#B7B7B7"
         elif percent <= 100.0:
-            color = "#1B8C7B"
+            color = "#5fbba1ff"
         elif percent <= 110.0:
             color = "#E1BF00"
         else:

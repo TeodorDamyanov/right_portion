@@ -160,10 +160,24 @@ def add_meal_from_template(request, template_id):
 
     return redirect('dashboard')
 
+
 @login_required
 def meal_templates(request):
     templates = MealTemplate.objects.filter(user=request.user)
+    show_favorites = request.GET.get("favorites")
+    
+    if show_favorites:
+        templates = templates.filter(is_favorite=True)
     return render(request, 'tracker/meal/meal_templates.html', {'templates': templates})
+
+
+@login_required
+def toggle_favorite(request, template_id):
+    template = MealTemplate.objects.get(id=template_id, user=request.user)
+    template.is_favorite = not template.is_favorite
+    template.save()
+    return redirect('templates')
+
 
 @login_required
 def delete_meal_template(request, template_id):

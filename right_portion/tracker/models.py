@@ -94,6 +94,7 @@ class MealFood(models.Model):
 class MealTemplate(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    is_favorite = models.BooleanField(default=False)
     total_calories = models.IntegerField(default=0)
     total_protein = models.IntegerField(default=0)
     total_carbs = models.IntegerField(default=0)

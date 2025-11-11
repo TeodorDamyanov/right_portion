@@ -1,6 +1,9 @@
 {% extends "base/base.html" %}
 {% block content %}
 <h2>My Meal Templates</h2>
+<a href="?favorites=1">Show Favorites ⭐</a>
+<a href="?">Show All</a>
+<div>
 {% for t in templates %}
   <p>{{ t.name }}</p>
   <form method="post" action="{% url 'add meal from template' t.id %}">
@@ -8,5 +11,11 @@
     <button type="submit">Add to Today</button>
   </form>
   <a href="{% url 'delete meal template' t.id %}">Delete Template</a>
+        {% if t.is_favorite %}
+          <a href="{% url 'toggle favorite' t.id%}">❤️</a>
+        {% else %}
+          <a href="{% url 'toggle favorite' t.id%}">🤍</a>
+        {% endif %}
+</div>
 {% endfor %}
 {% endblock %}
