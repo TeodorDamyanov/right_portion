@@ -8,5 +8,10 @@
 <p>{{ food.fats }} total fats</p>
 <a href="{% url 'food edit' food.slug %}" >Edit Food</a>
 <a href="{% url 'food delete' food.slug %}" >Delete Food</a>
+      {% if food.is_favorite %}
+        <a href="{% url 'toggle favorite food' food.id %}">⭐</a>
+      {% else %}
+        <a href="{% url 'toggle favorite food' food.id %}">☆</a>
+      {% endif %}
 
 {% endblock %}

@@ -65,6 +65,7 @@
         <ul>
           {% for food in top_foods %}
             <li>{{ food.food__name }} – {{ food.times_used }} time{{ food.times_used|pluralize }}</li>
+            <a href="{% url 'food details' food.food__slug %}" >Food Details</a>
           {% endfor %}
         </ul>
       {% else %}

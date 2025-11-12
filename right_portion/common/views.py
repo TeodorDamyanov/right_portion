@@ -33,7 +33,7 @@ def dashboard(request):
     top_foods = (
         MealFood.objects
         .filter(meal__user=request.user, meal__date__range=[week_ago, today])
-        .values('food__name')
+        .values('food__name', 'food__slug')
         .annotate(times_used=Count('id'))
         .order_by('-times_used')[:5]
     )

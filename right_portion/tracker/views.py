@@ -22,6 +22,9 @@ def add_meal(request):
         form = MealForm()
         formset = MealFoodFormSet()
 
+        for f in formset.forms:
+            f.fields['food'].queryset = Food.objects.order_by('-is_favorite', 'name')
+
     context = {
         'form': form,
         'formset': formset,
@@ -177,6 +180,14 @@ def toggle_favorite(request, template_id):
     template.is_favorite = not template.is_favorite
     template.save()
     return redirect('templates')
+
+
+@login_required
+def toggle_favorite_food(request, food_id):
+    food = Food.objects.get(id=food_id, user=request.user)
+    food.is_favorite = not food.is_favorite
+    food.save()
+    return redirect(request.META.get('HTTP_REFERER', 'food_list'))
 
 
 @login_required

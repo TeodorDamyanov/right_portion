@@ -5,7 +5,9 @@ from right_portion import settings
 
 class Food(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     slug = models.SlugField(unique=True, blank=True, null=True, editable=False)
+    is_favorite = models.BooleanField(default=False)
     calories = models.IntegerField(help_text="Per 100g")
     protein = models.IntegerField()
     carbs = models.IntegerField()
@@ -18,7 +20,8 @@ class Food(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name} - {self.calories} cals per 100g"
+        star = "⭐" if self.is_favorite else ""
+        return f"{self.name} - {self.calories} cals per 100g {star}"
     
 
 class Plan(models.Model):
