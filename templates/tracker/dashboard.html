@@ -46,28 +46,33 @@
     {% for m in meals %}
     <p>{{ m.name }}</p>
     <p>Includes:</p>
+
       {% for mf in m.meal_foods.all %}
         <p>{{ mf.food.name }} - {{ mf.quantity }} grams</p>
         <a href="{% url 'food details' mf.food.slug %}" >Food Details</a>
       {% empty %}
         <p>No foods added to this meal yet.</p>
       {% endfor %}
+
       <p>A total of {{ m.total_calories }} calories</p>
       <a href="{% url 'meal edit' m.slug %}" >Edit Meal</a>
       <a href="{% url 'meal delete' m.slug %}" >Delete Meal</a>
       <a href="{% url 'save meal as template' m.slug %}" class="btn btn-secondary">Save as Template</a>
+
     {% endfor %}
     <a href="{% url 'templates' %}" >All Templates</a>
 
     <div>
       <h3>Top Foods</h3>
       {% if top_foods %}
+
         <ul>
           {% for food in top_foods %}
             <li>{{ food.food__name }} – {{ food.times_used }} time{{ food.times_used|pluralize }}</li>
             <a href="{% url 'food details' food.food__slug %}" >Food Details</a>
           {% endfor %}
         </ul>
+        
       {% else %}
         <p>No foods logged yet this week.</p>
       {% endif %}
