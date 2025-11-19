@@ -7,106 +7,49 @@
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-
-    <h3>Foods</h3>
-    {{ formset.management_form }}
+    {% comment %} {{ formset.management_form }}
     <div id="formset-area">
-      {% for mf_form in formset %}
-        <div class="meal-food-form">
-          <div class="meal-food-form">
-            <label>Search Food:</label>
-              <input type="text"
-              class="food-search"
-              data-index="{{ forloop.counter0 }}"
-              placeholder="Type to search...">
-
-            <input type="hidden" name="{{ mf_form.food.html_name }}" id="{{ mf_form.food.id_for_label }}">
-            <div class="suggestions" data-index="{{ forloop.counter0 }}"></div>
-
-          {{ mf_form.quantity }}
-          </div>
+      {% for f in formset.forms %}
+        <div>
+            {{ f.food }} 
+            {{ f.quantity }}
         </div>
       {% endfor %}
-    </div>
+    </div> {% endcomment %}
 
     <button type="submit">Save Meal</button>
   </form>
-  <a href="{% url 'add food' %}?next={{ request.path }}">Add Food</a>
+  <h3>Foods</h3>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/elo80ka/django-dynamic-formset/src/jquery.formset.js"></script>
-
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
+    <form class="searchbar" method="post">
+      {% csrf_token %}
+      {{ search_form }}
+      <button type="submit" name="srch_btn">Search</button>
+    </form>
 
 
-  <script>
-  $(document).ready(function() {
-    $('#formset-area .meal-food-form').formset({
-      addText: 'Add another food',
-      deleteText: 'Remove', 
-      prefix: '{{ formset.prefix }}'
-    });
-  });
-</script>
+  <ul>
+  {% for food in all_foods %}
+    <li>
+      {{ food.name }}
+      <form method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" name="add_food" value="{{ food.id }}">Add</button>
+      </form>
+    </li>
+  {% empty %}
+    <li>No foods found.</li>
+  {% endfor %}
+  </ul>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
 
-    const foods = [
-        {% for food in foods %}
-            { name: "{{ food.name }}", value: "{{ food.id }}" },
-        {% endfor %}
-    ];
-
-    document.querySelectorAll(".food-search").forEach(input => {
-        const index = input.dataset.index;
-        const hiddenInput = document.querySelector(`#id_form-${index}-food`);
-        const suggestionsDiv = document.querySelector(`.suggestions[data-index='${index}']`);
-
-        input.addEventListener("input", function () {
-            const query = this.value.toLowerCase();
-            suggestionsDiv.innerHTML = "";
-
-            if (!query) return;
-
-            const matches = foods.filter(f => f.name.toLowerCase().includes(query));
-
-            matches.forEach(f => {
-                const div = document.createElement("div");
-                div.textContent = f.name;
-                div.classList.add("suggestion-item");
-                div.addEventListener("click", () => {
-                    input.value = f.name;
-                    hiddenInput.value = f.value;
-                    suggestionsDiv.innerHTML = "";
-                });
-                suggestionsDiv.appendChild(div);
-            });
-        });
-
-        // Optional: close suggestions if clicked outside
-        document.addEventListener("click", function(e){
-            if (!input.contains(e.target) && !suggestionsDiv.contains(e.target)) {
-                suggestionsDiv.innerHTML = "";
-            }
-        });
-    });
-
-});
-</script>
-
-<style>
-  .suggestions {
-    border: 1px solid #ccc;
-    max-height: 150px;
-    overflow-y: auto;
-    position: absolute;
-    background: white;
-    z-index: 1000;
-    width: 200px; /* same as input width */
-}
-</style>
+<ul>
+{% for food in added_foods %}
+    <li>
+        {{ food.name }}
+    </li>
+{% empty %}
+    <li>No foods selected yet.</li>
+{% endfor %}
+</ul>
 {% endblock %}

@@ -10,7 +10,6 @@ from right_portion.tracker.models import Meal, MealFood, Plan
 @login_required
 def dashboard(request):
     today = timezone.localdate()
-    print(today)
     week_ago = today - timedelta(days=6)
     recent_meals = Meal.objects.filter(user=request.user, date__range=[week_ago, today])
 
@@ -46,6 +45,7 @@ def dashboard(request):
         .order_by('-times_used')[:5]
     )
 
+    print(meals_by_day)
     if meals_by_day:
         avg_calories = sum(m['total_calories'] for m in meals_by_day) / len(meals_by_day)
     else:

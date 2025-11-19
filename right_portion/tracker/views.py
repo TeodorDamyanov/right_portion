@@ -1,46 +1,67 @@
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+
+from right_portion.common.forms import SearchForm
 from .models import Meal, MealFood, Food, MealTemplate, MealTemplateFood, Plan
-from .forms import MealForm, MealFoodFormSet, FoodForm
+from .forms import MealForm, FoodForm
 
 @login_required
 def add_meal(request):
+    all_foods = Food.objects.all()
+    search_form = SearchForm()
+    form = MealForm()
+    if 'selected_foods' not in request.session:
+        request.session['selected_foods'] = []
+    food_ids = request.session['selected_foods']
+    
     if request.method == 'POST':
-        form = MealForm(request.POST)
-        formset = MealFoodFormSet(request.POST)
+        if "srch_btn" in request.POST:
+            search_form = SearchForm(request.POST)
 
-        if form.is_valid() and formset.is_valid():
+            if search_form.is_valid():
+                search_query = search_form.cleaned_data['search']
+                all_foods = all_foods.filter(name__icontains=search_query)
+        # formset = MealFoodFormSet(request.POST)
+
+        if 'add_food' in request.POST:
+            food_id = request.POST.get('add_food')
+            food_ids.append(food_id)
+            request.session['selected_foods'] = food_ids
+            # food = Food.objects.get(id=food_id)
+            # meal = Meal.objects.get(user=request.user)  # or get current meal
+            # MealFood.objects.create(meal=meal, food=food)
+            return redirect('add meal')
+
+        if form.is_valid(): #  and formset.is_valid()
             meal = form.save(commit=False)
             meal.user = request.user
             meal.save()
-            formset.instance = meal
-            formset.save()
+            for id in food_ids:
+                food = Food.objects.get(id=id)
+                MealFood.objects.create(meal=meal, food=food)
+            # formset.instance = meal
+            # formset.save()
+            request.session['selected_foods'] = []
             return redirect("dashboard")
 
     else:
         form = MealForm()
-        formset = MealFoodFormSet()
+        # formset = MealFoodFormSet()
 
-        for f in formset.forms:
-            f.fields['food'].queryset = Food.objects.order_by('-is_favorite', 'name')
+        # for f in formset.forms:
+        #     f.fields['food'].queryset = Food.objects.order_by('-is_favorite', 'name')
 
+    added_foods = Food.objects.filter(id__in=food_ids)
     context = {
+        "all_foods": all_foods,
+        "search_form": search_form,
         'form': form,
-        'formset': formset,
+        'added_foods': added_foods,
+        # 'formset': formset,
     }
 
     return render(request, 'tracker/meal/add_meal.html', context)
-
-@login_required
-def food_details(request, food_slug):
-    food = Food.objects.filter(slug=food_slug).first()
-
-    context = {
-        "food": food,
-    }
-
-    return render(request, 'tracker/food/food-details-page.html', context)
 
 
 @login_required
@@ -49,23 +70,23 @@ def edit_meal(request, meal_slug):
 
     if request.method == "POST":
         form = MealForm(request.POST, instance=meal)
-        formset = MealFoodFormSet(request.POST, instance=meal)
-        if form.is_valid() and formset.is_valid():
+        # formset = MealFoodFormSet(request.POST, instance=meal)
+        if form.is_valid(): #  and formset.is_valid()
             form.save()
-            formset.save()
+            # formset.save()
             return redirect("dashboard")
         else:
             print("Form errors:", form.errors)
-            print("Formset errors:", formset.errors)
+            # print("Formset errors:", formset.errors)
 
 
     else:
         form = MealForm(instance=meal)
-        formset = MealFoodFormSet(instance=meal)
+        # formset = MealFoodFormSet(instance=meal)
 
     context = {
         'form': form,
-        'formset': formset,
+        # 'formset': formset,
         'meal': meal,
     }
 
@@ -95,6 +116,17 @@ def add_food(request):
         next_url = request.GET.get('next', 'dashboard')
         return redirect(next_url)
     return render(request, 'tracker/food/add_food.html', {"form": form})
+
+
+@login_required
+def food_details(request, food_slug):
+    food = Food.objects.filter(slug=food_slug).first()
+
+    context = {
+        "food": food,
+    }
+
+    return render(request, 'tracker/food/food-details-page.html', context)
 
 
 @login_required
