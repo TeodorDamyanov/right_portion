@@ -10,57 +10,50 @@ from .forms import MealForm, FoodForm
 def add_meal(request):
     all_foods = Food.objects.all()
     search_form = SearchForm()
-    form = MealForm()
+
     if 'selected_foods' not in request.session:
         request.session['selected_foods'] = []
     food_ids = request.session['selected_foods']
     
     if request.method == 'POST':
+        form = MealForm(request.POST)
+
         if "srch_btn" in request.POST:
             search_form = SearchForm(request.POST)
 
             if search_form.is_valid():
                 search_query = search_form.cleaned_data['search']
                 all_foods = all_foods.filter(name__icontains=search_query)
-        # formset = MealFoodFormSet(request.POST)
 
         if 'add_food' in request.POST:
             food_id = request.POST.get('add_food')
             food_ids.append(food_id)
             request.session['selected_foods'] = food_ids
-            # food = Food.objects.get(id=food_id)
-            # meal = Meal.objects.get(user=request.user)  # or get current meal
-            # MealFood.objects.create(meal=meal, food=food)
-            return redirect('add meal')
+            return redirect('add food')
 
-        if form.is_valid(): #  and formset.is_valid()
+        if form.is_valid():
             meal = form.save(commit=False)
             meal.user = request.user
             meal.save()
             for id in food_ids:
                 food = Food.objects.get(id=id)
-                MealFood.objects.create(meal=meal, food=food)
-            # formset.instance = meal
-            # formset.save()
+                MealFood.objects.create(meal=meal, food=food, quantity=100.0)
             request.session['selected_foods'] = []
             return redirect("dashboard")
 
     else:
         form = MealForm()
-        # formset = MealFoodFormSet()
 
         # for f in formset.forms:
         #     f.fields['food'].queryset = Food.objects.order_by('-is_favorite', 'name')
+    added_foods = [Food.objects.get(id=f_id) for f_id in food_ids]
 
-    added_foods = Food.objects.filter(id__in=food_ids)
     context = {
         "all_foods": all_foods,
         "search_form": search_form,
         'form': form,
         'added_foods': added_foods,
-        # 'formset': formset,
     }
-
     return render(request, 'tracker/meal/add_meal.html', context)
 
 
@@ -70,23 +63,18 @@ def edit_meal(request, meal_slug):
 
     if request.method == "POST":
         form = MealForm(request.POST, instance=meal)
-        # formset = MealFoodFormSet(request.POST, instance=meal)
-        if form.is_valid(): #  and formset.is_valid()
+        if form.is_valid():
             form.save()
-            # formset.save()
             return redirect("dashboard")
         else:
             print("Form errors:", form.errors)
-            # print("Formset errors:", formset.errors)
 
 
     else:
         form = MealForm(instance=meal)
-        # formset = MealFoodFormSet(instance=meal)
 
     context = {
         'form': form,
-        # 'formset': formset,
         'meal': meal,
     }
 

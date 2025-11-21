@@ -31,21 +31,20 @@ def dashboard(request):
 
     top_foods = (
         MealFood.objects
-        .filter(meal__user=request.user, meal__date__range=[week_ago, today])
+        .filter(meal__user=request.user)
         .values('food__name', 'food__slug')
         .annotate(times_used=Count('id'))
         .order_by('-times_used')[:5]
     )
 
-    top_meals = (
-        MealFood.objects
-        .filter(meal__user=request.user, meal__date__range=[week_ago, today])
-        .values('meal__name')
-        .annotate(times_used=Count('id'))
-        .order_by('-times_used')[:5]
-    )
+    # top_meals = (
+    #     MealFood.objects
+    #     .filter(meal__user=request.user)
+    #     .values('meal__name')
+    #     .annotate(times_used=Count('id'))
+    #     .order_by('-times_used')[:5]
+    # )
 
-    print(meals_by_day)
     if meals_by_day:
         avg_calories = sum(m['total_calories'] for m in meals_by_day) / len(meals_by_day)
     else:

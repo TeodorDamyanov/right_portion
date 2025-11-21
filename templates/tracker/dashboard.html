@@ -79,7 +79,7 @@
       {% endif %}
     </div>
 
-    <div>
+    {% comment %} <div>
       <h3>Top Meals</h3>
       {% if top_meals %}
         <ul>
@@ -90,7 +90,7 @@
       {% else %}
         <p>No meals logged yet this week.</p>
       {% endif %}
-    </div>
+    </div> {% endcomment %}
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="{% static 'tracker/js/dashboard-charts.js' %}"></script>
