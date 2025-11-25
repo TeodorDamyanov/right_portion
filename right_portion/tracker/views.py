@@ -10,10 +10,7 @@ from .forms import MealForm, FoodForm
 def add_meal(request):
     all_foods = Food.objects.all()
     search_form = SearchForm()
-
-    if 'selected_foods' not in request.session:
-        request.session['selected_foods'] = []
-    food_ids = request.session['selected_foods']
+    form = MealForm()
     
     if request.method == 'POST':
         form = MealForm(request.POST)
@@ -25,34 +22,30 @@ def add_meal(request):
                 search_query = search_form.cleaned_data['search']
                 all_foods = all_foods.filter(name__icontains=search_query)
 
-        if 'add_food' in request.POST:
-            food_id = request.POST.get('add_food')
-            food_ids.append(food_id)
-            request.session['selected_foods'] = food_ids
-            return redirect('add food')
-
-        if form.is_valid():
+        elif form.is_valid():
+            # Get selected foods and quantities from POST data
+            selected_foods = {}
+            for key, value in request.POST.items():
+                if key.startswith('quantity_'):
+                    food_id = key.replace('quantity_', '')
+                    try:
+                        quantity = float(value) if value else 100.0
+                    except (ValueError, TypeError):
+                        quantity = 100.0
+                    selected_foods[food_id] = quantity
+            
             meal = form.save(commit=False)
             meal.user = request.user
             meal.save()
-            for id in food_ids:
-                food = Food.objects.get(id=id)
-                MealFood.objects.create(meal=meal, food=food, quantity=100.0)
-            request.session['selected_foods'] = []
+            for food_id, quantity in selected_foods.items():
+                food = Food.objects.get(id=food_id)
+                MealFood.objects.create(meal=meal, food=food, quantity=quantity)
             return redirect("dashboard")
-
-    else:
-        form = MealForm()
-
-        # for f in formset.forms:
-        #     f.fields['food'].queryset = Food.objects.order_by('-is_favorite', 'name')
-    added_foods = [Food.objects.get(id=f_id) for f_id in food_ids]
 
     context = {
         "all_foods": all_foods,
         "search_form": search_form,
         'form': form,
-        'added_foods': added_foods,
     }
     return render(request, 'tracker/meal/add_meal.html', context)
 

@@ -2,26 +2,22 @@
 
 {% block content %}
 {% load static %}
+{% load custom_filters %}
   <h2>Add Meal</h2>
 
-  <form method="post">
+  <form method="post" id="main-form">
     {% csrf_token %}
     {{ form.as_p }}
-    {% comment %} {{ formset.management_form }}
-    <div id="formset-area">
-      {% for f in formset.forms %}
-        <div>
-            {{ f.food }} 
-            {{ f.quantity }}
-        </div>
-      {% endfor %}
-    </div> {% endcomment %}
 
-    <button type="submit">Save Meal</button>
+    <div id="selected-foods-list">
+      <!-- Selected foods will be added here by JavaScript -->
+    </div>
+
+    <button type="submit" id="save-btn">Save Meal</button>
   </form>
   <h3>Foods</h3>
 
-    <form class="searchbar" method="post">
+    <form class="searchbar" method="post" id="search-form">
       {% csrf_token %}
       {{ search_form }}
       <button type="submit" name="srch_btn">Search</button>
@@ -31,24 +27,57 @@
   {% for food in all_foods %}
     <li>
       {{ food.name }}
-      <form method="post" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit" name="add_food" value="{{ food.id }}">Add</button>
-      </form>
+      <button type="button" class="add-food-btn" data-food-id="{{ food.id }}" data-food-name="{{ food.name }}">Add</button>
     </li>
   {% empty %}
     <li>No foods found.</li>
   {% endfor %}
   </ul>
 
+<script>
+// Use localStorage to store selected foods (cleared on page refresh)
+let selectedFoods = {};
 
-<ul>
-{% for food in added_foods %}
-    <li>
-        {{ food.name }}
-    </li>
-{% empty %}
-    <li>No foods selected yet.</li>
-{% endfor %}
-</ul>
+function renderSelectedFoods() {
+  const container = document.getElementById('selected-foods-list');
+  container.innerHTML = '';
+  
+  for (const [foodId, quantity] of Object.entries(selectedFoods)) {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <input type="hidden" name="food_id_${foodId}" value="${foodId}">
+      <label>Food ID: ${foodId} - Quantity: 
+        <input type="number" name="quantity_${foodId}" value="${quantity}" step="0.1" min="0"> g
+        <button type="button" onclick="removeFood('${foodId}')">Remove</button>
+      </label>
+    `;
+    container.appendChild(div);
+  }
+}
+
+function addFood(foodId, foodName) {
+  if (!(foodId in selectedFoods)) {
+    selectedFoods[foodId] = 100.0;
+    renderSelectedFoods();
+  }
+}
+
+function removeFood(foodId) {
+  delete selectedFoods[foodId];
+  renderSelectedFoods();
+}
+
+// Add event listeners to all add food buttons
+document.querySelectorAll('.add-food-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    addFood(this.dataset.foodId, this.dataset.foodName);
+  });
+});
+
+// Prevent search form from submitting the main form
+document.getElementById('search-form').addEventListener('submit', function(e) {
+  // Let it submit normally for search
+});
+</script>
 {% endblock %}

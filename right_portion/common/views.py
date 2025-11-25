@@ -46,7 +46,7 @@ def dashboard(request):
     # )
 
     if meals_by_day:
-        avg_calories = sum(m['total_calories'] for m in meals_by_day) / len(meals_by_day)
+        avg_calories = sum(m['total_calories'] or 0 for m in meals_by_day) / len(meals_by_day)
     else:
         avg_calories = 0
 
@@ -78,7 +78,7 @@ def dashboard(request):
 
         "avg_calories": round(avg_calories),
         'top_foods': top_foods,
-        'top_meals': top_meals,
+        # 'top_meals': top_meals,
         "streak": streak,
 
         'total_calories': round(total_calories, 1),

@@ -5,6 +5,11 @@ class MealForm(forms.ModelForm):
     class Meta:
         model = Meal
         fields = ['name']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.error_messages = {'required': ''}
 
 class FoodForm(forms.ModelForm):
     class Meta:
