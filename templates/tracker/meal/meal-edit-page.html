@@ -1,62 +1,91 @@
-{% extends 'base/base.html'%}
+{% extends "base/base.html" %}
+
 {% block content %}
-    <style>
-        input[name$="-DELETE"] {
-            display: none;
-            
-        }
-    </style>
-    <div class="edit-deleteee edit-photo">
-        <h2>Edit {{ meal.name }}</h2>
+{% load static %}
+{% load custom_filters %}
 
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
+<h2>Edit Meal: {{ meal.name }}</h2>
 
-            <h3>Foods in this meal</h3>
+<form method="post" id="main-form">
+    {% csrf_token %}
+    {{ form.as_p }}
 
-            {{ formset.management_form }}
-            <div id="formset-container">
-                {% for mf_form in formset %}
-                  <div class="mealfood-form border p-2 mb-2 rounded">
-                    
-                    {{ mf_form.as_p }}
-
-                    <button type="button" class="remove-form btn btn-danger btn-sm">Remove</button>
-                  </div>
-                {% endfor %}
-            </div>
-
-            <button type="button" id="add-form" class="btn btn-secondary mt-2">Add Food</button>
-            <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
-        </form>
-        <a href="{% url 'add food' %}?next={{ request.path }}">Add Food</a>
+    <div id="selected-foods-list">
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            let formIndex = $('#id_mealfood_set-TOTAL_FORMS').val();
+    <button type="submit" id="save-btn">Save Changes</button>
+</form>
 
-            // Add new form
-            $('#add-form').click(function() {
-                let newForm = $('.mealfood-form:first').clone(false);
-                newForm.find('input, select').each(function() {
-                    const name = $(this).attr('name').replace(/-\d+-/, '-' + formIndex + '-');
-                    const id = 'id_' + name;
-                    $(this).attr({'name': name, 'id': id}).val('');
-                    if ($(this).is(':checkbox')) $(this).prop('checked', false);
-                });
-                newForm.appendTo('#formset-container');
-                $('#id_mealfood_set-TOTAL_FORMS').val(++formIndex);
-            });
+<h3>Add More Foods</h3>
 
-            // Remove form
-            $(document).on('click', '.remove-form', function() {
-                const formDiv = $(this).closest('.mealfood-form');
-                formDiv.find('input[type=checkbox][name$="-DELETE"]').prop('checked', true); // mark for deletion
-                formDiv.hide(); // hide visually
-            });
-        });
-    </script>
+<form class="searchbar" method="get" id="search-form">
+    {{ search_form }}
+    <button type="submit" name="srch_btn">Search</button>
+</form>
+
+<ul>
+  {% for food in all_foods %}
+    <li>
+        {% if food.id in meal_food_ids %}
+            <button disabled>{{ food.name }}</button>
+        {% else %}
+            {{ food.name }}
+            <button type="button" class="add-food-btn" data-food-id="{{ food.id }}" data-food-name="{{ food.name }}">Add</button>
+        {% endif %}
+    </li>
+  {% empty %}
+    <li>No foods found.</li>
+  {% endfor %}
+</ul>
+
+
+<script>
+let selectedFoods = {};
+
+{% for mf in meal.meal_foods.all %}
+    selectedFoods["{{ mf.food.id }}"] = {{ mf.quantity|floatformat:1 }};
+{% endfor %}
+
+function renderSelectedFoods() {
+  const container = document.getElementById('selected-foods-list');
+  container.innerHTML = '';
+
+  for (const [foodId, quantity] of Object.entries(selectedFoods)) {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <input type="hidden" name="food_id_${foodId}" value="${foodId}">
+      <label>
+        Food ID: ${foodId} — Quantity:
+        <input type="number" name="quantity_${foodId}" value="${quantity}" min="0" step="0.1">
+        g
+        <button type="button" onclick="removeFood('${foodId}')">Remove</button>
+      </label>
+    `;
+    container.appendChild(div);
+  }
+}
+
+function addFood(foodId, foodName) {
+  if (!(foodId in selectedFoods)) {
+    selectedFoods[foodId] = 100.0;
+    renderSelectedFoods();
+  }
+}
+
+function removeFood(foodId) {
+  delete selectedFoods[foodId];
+  renderSelectedFoods();
+}
+
+document.querySelectorAll('.add-food-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    addFood(btn.dataset.foodId, btn.dataset.foodName);
+  });
+});
+
+renderSelectedFoods();
+
+</script>
+
 {% endblock %}

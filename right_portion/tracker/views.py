@@ -9,21 +9,17 @@ from .forms import MealForm, FoodForm
 @login_required
 def add_meal(request):
     all_foods = Food.objects.all()
-    search_form = SearchForm()
+    search_form = SearchForm(request.GET or None)
     form = MealForm()
     
+    search_query = request.GET.get("search", "")
+    if search_query:
+        all_foods = all_foods.filter(name__icontains=search_query)
+
     if request.method == 'POST':
         form = MealForm(request.POST)
 
-        if "srch_btn" in request.POST:
-            search_form = SearchForm(request.POST)
-
-            if search_form.is_valid():
-                search_query = search_form.cleaned_data['search']
-                all_foods = all_foods.filter(name__icontains=search_query)
-
-        elif form.is_valid():
-            # Get selected foods and quantities from POST data
+        if form.is_valid():
             selected_foods = {}
             for key, value in request.POST.items():
                 if key.startswith('quantity_'):
@@ -41,6 +37,8 @@ def add_meal(request):
                 food = Food.objects.get(id=food_id)
                 MealFood.objects.create(meal=meal, food=food, quantity=quantity)
             return redirect("dashboard")
+    else:
+        form = MealForm(request.GET or None)
 
     context = {
         "all_foods": all_foods,
@@ -53,25 +51,48 @@ def add_meal(request):
 @login_required
 def edit_meal(request, meal_slug):
     meal = Meal.objects.get(slug=meal_slug)
+    all_foods = Food.objects.filter(user=request.user)
+    search_form = SearchForm()
+
+    form = MealForm(request.POST or None, instance=meal)
+
+    search_query = request.GET.get("search", "")
+    if search_query:
+        all_foods = all_foods.filter(name__icontains=search_query)
 
     if request.method == "POST":
-        form = MealForm(request.POST, instance=meal)
+
         if form.is_valid():
             form.save()
+            meal.meal_foods.all().delete()
+            selected_foods = {}
+            for key, value in request.POST.items():
+                if key.startswith("quantity_"):
+                    food_id = key.replace("quantity_", "")
+                    try:
+                        quantity = float(value) if value else 100.0
+                    except (ValueError, TypeError):
+                        quantity = 100.0
+                    selected_foods[food_id] = quantity
+
+            for food_id, quantity in selected_foods.items():
+                food = Food.objects.get(id=food_id, user=request.user)
+                MealFood.objects.create(meal=meal, food=food, quantity=quantity)
+
             return redirect("dashboard")
-        else:
-            print("Form errors:", form.errors)
-
-
-    else:
-        form = MealForm(instance=meal)
+        
+    meal_food_ids = set(meal.meal_foods.values_list("food_id", flat=True))
 
     context = {
-        'form': form,
-        'meal': meal,
+        "meal": meal,
+        "form": form,
+        "all_foods": all_foods,
+        "search_form": search_form,
+        "meal_food_ids": meal_food_ids,
     }
 
-    return render(request, 'tracker/meal/meal-edit-page.html', context)
+    return render(request, "tracker/meal/meal-edit-page.html", context)
+
 
 
 @login_required

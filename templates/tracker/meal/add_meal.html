@@ -10,14 +10,13 @@
     {{ form.as_p }}
 
     <div id="selected-foods-list">
-      <!-- Selected foods will be added here by JavaScript -->
     </div>
 
     <button type="submit" id="save-btn">Save Meal</button>
   </form>
   <h3>Foods</h3>
 
-    <form class="searchbar" method="post" id="search-form">
+    <form class="searchbar" method="get" id="search-form">
       {% csrf_token %}
       {{ search_form }}
       <button type="submit" name="srch_btn">Search</button>
@@ -35,7 +34,6 @@
   </ul>
 
 <script>
-// Use localStorage to store selected foods (cleared on page refresh)
 let selectedFoods = {};
 
 function renderSelectedFoods() {
@@ -67,17 +65,13 @@ function removeFood(foodId) {
   renderSelectedFoods();
 }
 
-// Add event listeners to all add food buttons
 document.querySelectorAll('.add-food-btn').forEach(btn => {
   btn.addEventListener('click', function(e) {
     e.preventDefault();
     addFood(this.dataset.foodId, this.dataset.foodName);
   });
 });
-
-// Prevent search form from submitting the main form
 document.getElementById('search-form').addEventListener('submit', function(e) {
-  // Let it submit normally for search
 });
 </script>
 {% endblock %}
