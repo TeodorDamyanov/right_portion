@@ -9,15 +9,22 @@ from .forms import MealForm, FoodForm
 @login_required
 def add_meal(request):
     all_foods = Food.objects.all()
+    meal_name = request.GET.get("name", "")
+    form = MealForm(request.GET or None)
     search_form = SearchForm(request.GET or None)
-    form = MealForm()
+
+    if request.method == "POST":
+        form = MealForm(request.POST)
+    else:
+        # Preserve name across searches
+        form = MealForm(initial={"name": request.GET.get("name", "")})
     
+
     search_query = request.GET.get("search", "")
     if search_query:
         all_foods = all_foods.filter(name__icontains=search_query)
 
     if request.method == 'POST':
-        form = MealForm(request.POST)
 
         if form.is_valid():
             selected_foods = {}
@@ -37,8 +44,6 @@ def add_meal(request):
                 food = Food.objects.get(id=food_id)
                 MealFood.objects.create(meal=meal, food=food, quantity=quantity)
             return redirect("dashboard")
-    else:
-        form = MealForm(request.GET or None)
 
     context = {
         "all_foods": all_foods,
