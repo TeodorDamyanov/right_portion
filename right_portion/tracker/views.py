@@ -10,17 +10,15 @@ from .forms import MealForm, FoodForm
 def add_meal(request):
     all_foods = Food.objects.all()
     meal_name = request.GET.get("name", "")
-    form = MealForm(request.GET or None)
-    search_form = SearchForm(request.GET or None)
-
-    if request.method == "POST":
-        form = MealForm(request.POST)
-    else:
-        # Preserve name across searches
-        form = MealForm(initial={"name": request.GET.get("name", "")})
-    
-
     search_query = request.GET.get("search", "")
+
+    if request.method == "GET":
+        form = MealForm(initial={"name": meal_name})
+        print(request.GET)
+    else:
+        form = MealForm(request.POST)
+    
+    search_form = SearchForm(request.GET or None)
     if search_query:
         all_foods = all_foods.filter(name__icontains=search_query)
 
@@ -49,6 +47,7 @@ def add_meal(request):
         "all_foods": all_foods,
         "search_form": search_form,
         'form': form,
+        "meal_name": meal_name,
     }
     return render(request, 'tracker/meal/add_meal.html', context)
 
