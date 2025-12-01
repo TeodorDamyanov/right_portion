@@ -9,20 +9,21 @@ from .forms import MealForm, FoodForm
 @login_required
 def add_meal(request):
     all_foods = Food.objects.all()
-    meal_name = request.GET.get("name", "")
+    form = MealForm()
     search_query = request.GET.get("search", "")
-
-    if request.method == "GET":
-        form = MealForm(initial={"name": meal_name})
-        print(request.GET)
-    else:
-        form = MealForm(request.POST)
+    meal_name = request.session.get("meal_name", "")
     
     search_form = SearchForm(request.GET or None)
     if search_query:
         all_foods = all_foods.filter(name__icontains=search_query)
 
-    if request.method == 'POST':
+    if request.method == "GET":
+        form = MealForm(initial={"name": meal_name})
+    else:
+        form = MealForm(request.POST)
+        
+    if request.method == "POST":
+
 
         if form.is_valid():
             selected_foods = {}
