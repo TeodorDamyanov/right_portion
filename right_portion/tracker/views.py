@@ -8,22 +8,21 @@ from .forms import MealForm, FoodForm
 
 @login_required
 def add_meal(request):
-    all_foods = Food.objects.all()
-    form = MealForm()
+    all_foods = Food.objects.all().filter(user=request.user)
     search_query = request.GET.get("search", "")
-    meal_name = request.session.get("meal_name", "")
+    meal_name = request.GET.get("name", "New Meal")
+    form = MealForm()
     
     search_form = SearchForm(request.GET or None)
     if search_query:
         all_foods = all_foods.filter(name__icontains=search_query)
 
-    if request.method == "GET":
+    if "srch_btn" in request.GET:
+        print(request.GET)
+        meal_name = form.initial.get('name')
         form = MealForm(initial={"name": meal_name})
     else:
         form = MealForm(request.POST)
-        
-    if request.method == "POST":
-
 
         if form.is_valid():
             selected_foods = {}
