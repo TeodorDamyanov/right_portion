@@ -11,15 +11,12 @@ def add_meal(request):
     all_foods = Food.objects.all().filter(user=request.user)
     search_query = request.GET.get("search", "")
     meal_name = request.GET.get("name", "New Meal")
-    form = MealForm()
     
     search_form = SearchForm(request.GET or None)
     if search_query:
         all_foods = all_foods.filter(name__icontains=search_query)
 
-    if "srch_btn" in request.GET:
-        print(request.GET)
-        meal_name = form.initial.get('name')
+    if request.method == "GET":
         form = MealForm(initial={"name": meal_name})
     else:
         form = MealForm(request.POST)

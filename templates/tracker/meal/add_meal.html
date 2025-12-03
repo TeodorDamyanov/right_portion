@@ -17,7 +17,7 @@
   <h3>Foods</h3>
 
     <form class="searchbar" method="get" id="search-form">
-      <input name="name" value="{{ meal_name }}">
+      <input type="hidden" name="name" id="hidden-name">
       {{ search_form }}
       <button type="submit" name="srch_btn">Search</button>
     </form>
@@ -34,6 +34,16 @@
   </ul>
 
 <script>
+document.getElementById("search-form").addEventListener("submit", function () {
+
+    // Get the value from MealForm name input
+    const mealName = document.getElementById("id_name").value;
+
+    // Put it into the hidden input inside the GET form
+    document.getElementById("hidden-name").value = mealName;
+
+});
+
 let selectedFoods = {};
 
 function renderSelectedFoods() {

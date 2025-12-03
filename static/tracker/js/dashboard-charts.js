@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
       daily = 0
     }
 
-    let secColor = "#1B8C7B"
+    let secColor = "#8cc1b2ff"
     if (backColor == "#B7B7B7") {
       secColor = "#B7B7B7"
     }
