@@ -6,15 +6,23 @@ from right_portion.common.forms import SearchForm
 from .models import Meal, MealFood, Food, MealTemplate, MealTemplateFood, Plan
 from .forms import MealForm, FoodForm
 
+from ..usda import fetch_usda_food
+
 @login_required
 def add_meal(request):
-    all_foods = Food.objects.all().filter(user=request.user)
+    all_foods = Food.objects.filter(user=request.user)
     search_query = request.GET.get("search", "")
     meal_name = request.GET.get("name", "New Meal")
     
     search_form = SearchForm(request.GET or None)
+    request.session.pop("search_result", None)
     if search_query:
         all_foods = all_foods.filter(name__icontains=search_query)
+        if not all_foods.exists() and search_query != "":
+            usda_data = fetch_usda_food(search_query)
+            if usda_data:
+                request.session["search_result"] = usda_data
+                all_foods = []
 
     if request.method == "GET":
         form = MealForm(initial={"name": meal_name})
@@ -40,6 +48,7 @@ def add_meal(request):
                 MealFood.objects.create(meal=meal, food=food, quantity=quantity)
             return redirect("dashboard")
 
+    all_foods = all_foods[:5]
     context = {
         "all_foods": all_foods,
         "search_form": search_form,

@@ -29,8 +29,20 @@
       <button type="button" class="add-food-btn" data-food-id="{{ food.id }}" data-food-name="{{ food.name }}">Add</button>
     </li>
   {% empty %}
-    <li>No foods found.</li>
+    <li>No foods found in database.</li>
   {% endfor %}
+  </ul>
+
+  <ul>
+  {% if request.session.search_result %}
+    <li>
+        <p>{{ request.session.search_result.name }}</p>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <button type="submit">Add to Foods</button>
+        </form>
+    </li>
+  {% endif %}
   </ul>
 
 <script>

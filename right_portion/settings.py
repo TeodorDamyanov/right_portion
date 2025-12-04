@@ -140,3 +140,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
     "**/*.html": "django-html"
   }
 }
+
+USDA_API_KEY = "iTlBNajwHX64qen9Cym388B92BbDE5f4GHMZDGpR"
