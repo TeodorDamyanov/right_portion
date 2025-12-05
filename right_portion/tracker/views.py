@@ -15,12 +15,16 @@ def add_meal(request):
     meal_name = request.GET.get("name", "New Meal")
     
     search_form = SearchForm(request.GET or None)
-    request.session.pop("search_result", None)
+    # request.session.pop("search_result", None)
     if search_query:
         all_foods = all_foods.filter(name__icontains=search_query)
         if not all_foods.exists() and search_query != "":
             usda_data = fetch_usda_food(search_query)
             if usda_data:
+                if isinstance(usda_data, str):
+                    import json
+                    usda_data = json.loads(usda_data)
+
                 request.session["search_result"] = usda_data
                 all_foods = []
 
@@ -56,6 +60,26 @@ def add_meal(request):
         "meal_name": meal_name,
     }
     return render(request, 'tracker/meal/add_meal.html', context)
+
+
+@login_required
+def add_db_food(request):
+    data = request.session.get("search_result")
+    if not data:
+        return redirect("add_meal")
+
+    food = Food(
+        name=data["name"],
+        calories=data["calories"],
+        protein=data["protein"],
+        carbs=data["carbs"],
+        fats=data["fat"],
+    )
+    food.user = request.user
+    food.save()
+
+    request.session.pop("search_result", None)
+    return redirect("add meal")
 
 
 @login_required

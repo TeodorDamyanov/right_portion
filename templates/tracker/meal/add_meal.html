@@ -2,7 +2,7 @@
 
 {% block content %}
 {% load static %}
-{% load custom_filters %}
+{% load custom_filters_2 %}
   <h2>Add Meal</h2>
 
   <form method="post" id="main-form">
@@ -28,8 +28,6 @@
       {{ food.name }}
       <button type="button" class="add-food-btn" data-food-id="{{ food.id }}" data-food-name="{{ food.name }}">Add</button>
     </li>
-  {% empty %}
-    <li>No foods found in database.</li>
   {% endfor %}
   </ul>
 
@@ -37,7 +35,7 @@
   {% if request.session.search_result %}
     <li>
         <p>{{ request.session.search_result.name }}</p>
-        <form method="POST" action="">
+        <form method="POST" action="{% url 'add db food' %}">
             {% csrf_token %}
             <button type="submit">Add to Foods</button>
         </form>

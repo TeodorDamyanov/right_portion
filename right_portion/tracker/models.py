@@ -5,7 +5,7 @@ from right_portion import settings
 
 class Food(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , null=False)
     slug = models.SlugField(unique=True, blank=True, null=True, editable=False)
     is_favorite = models.BooleanField(default=False)
     calories = models.IntegerField(help_text="Per 100g")

@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('add_meal/', views.add_meal, name='add meal'),
+    path("add_db_food/", views.add_db_food, name="add db food"),
     path('edit/<slug:meal_slug>/', views.edit_meal, name="meal edit"),
     path('delete/<slug:meal_slug>/', views.delete_meal, name="meal delete"),
 
