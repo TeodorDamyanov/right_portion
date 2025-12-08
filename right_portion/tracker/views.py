@@ -6,7 +6,7 @@ from right_portion.common.forms import SearchForm
 from .models import Meal, MealFood, Food, MealTemplate, MealTemplateFood, Plan
 from .forms import MealForm, FoodForm
 
-from ..usda import fetch_usda_food
+from ..usda import fetch_usda_foods
 
 @login_required
 def add_meal(request):
@@ -19,14 +19,11 @@ def add_meal(request):
     if search_query:
         all_foods = all_foods.filter(name__icontains=search_query)
         if not all_foods.exists() and search_query != "":
-            usda_data = fetch_usda_food(search_query)
+            usda_data = fetch_usda_foods(search_query)
             if usda_data:
-                if isinstance(usda_data, str):
-                    import json
-                    usda_data = json.loads(usda_data)
-
-                request.session["search_result"] = usda_data
-                all_foods = []
+                if isinstance(usda_data, list):
+                    request.session["search_result"] = usda_data
+                    all_foods = []
 
     if request.method == "GET":
         form = MealForm(initial={"name": meal_name})
@@ -58,15 +55,20 @@ def add_meal(request):
         "search_form": search_form,
         'form': form,
         "meal_name": meal_name,
+        "usda_results": request.session.get("search_result", []),
     }
     return render(request, 'tracker/meal/add_meal.html', context)
 
 
 @login_required
 def add_db_food(request):
-    data = request.session.get("search_result")
-    if not data:
+    idx = int(request.GET.get("idx", 0))
+    data_list = request.session.get("search_result", [])
+
+    if not data_list or idx >= len(data_list):
         return redirect("add_meal")
+
+    data = data_list[idx]
 
     food = Food(
         name=data["name"],
