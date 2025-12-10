@@ -23,6 +23,11 @@
     </form>
 
   <ul>
+    <li>
+      <strong>Most recently added food:</strong>
+      {{ recent_food.name }}
+      <button type="button" class="add-food-btn" data-food-id="{{ recent_food.id }}" data-food-name="{{ recent_food.name }}">Add</button>
+    </li>
   {% for food in all_foods %}
     <li>
       {{ food.name }}

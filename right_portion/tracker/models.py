@@ -4,9 +4,10 @@ from django.utils import timezone
 from right_portion import settings
 
 class Food(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE , null=False)
     slug = models.SlugField(unique=True, blank=True, null=True, editable=False)
+    date = models.DateField(auto_now_add=True)
     is_favorite = models.BooleanField(default=False)
     calories = models.IntegerField(help_text="Per 100g")
     protein = models.IntegerField()

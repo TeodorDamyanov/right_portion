@@ -10,12 +10,13 @@ from ..usda import fetch_usda_foods
 
 @login_required
 def add_meal(request):
-    all_foods = Food.objects.filter(user=request.user)
+    all_foods = Food.objects.filter(user=request.user).order_by('-is_favorite')
+    recent_food = all_foods.order_by('-date').first()
     search_query = request.GET.get("search", "")
     meal_name = request.GET.get("name", "New Meal")
     
     search_form = SearchForm(request.GET or None)
-    # request.session.pop("search_result", None)
+    request.session.pop("search_result", None)
     if search_query:
         all_foods = all_foods.filter(name__icontains=search_query)
         if not all_foods.exists() and search_query != "":
@@ -55,6 +56,7 @@ def add_meal(request):
         "search_form": search_form,
         'form': form,
         "meal_name": meal_name,
+        "recent_food": recent_food,
         "usda_results": request.session.get("search_result", []),
     }
     return render(request, 'tracker/meal/add_meal.html', context)
