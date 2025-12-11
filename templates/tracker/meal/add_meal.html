@@ -68,10 +68,11 @@ function renderSelectedFoods() {
   container.innerHTML = '';
   
   for (const [foodId, quantity] of Object.entries(selectedFoods)) {
+    const name = document.querySelector(`button[data-food-id='${foodId}']`).dataset.foodName;
     const div = document.createElement('div');
     div.innerHTML = `
       <input type="hidden" name="food_id_${foodId}" value="${foodId}">
-      <label>Food ID: ${foodId} - Quantity: 
+      <label>${name} - Quantity: 
         <input type="number" name="quantity_${foodId}" value="${quantity}" step="0.1" min="0"> g
         <button type="button" onclick="removeFood('${foodId}')">Remove</button>
       </label>
