@@ -43,7 +43,7 @@
         <div class="pet-photos">
             {% if page_obj.object_list %}
                 {% for meal in page_obj.object_list %}
-                    {{ meal.name }}
+                    <strong>{{ meal.name }}</strong> - {{ meal.total_calories }} kcal <em>({{ meal.date }})</em>
                     <p></p>
             {% endfor %}
             {% else %}

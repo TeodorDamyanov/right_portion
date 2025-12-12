@@ -22,7 +22,7 @@ class UserLoginView(auth_views.LoginView):
 
 
 class UserLogoutView(auth_views.LogoutView):
-    next_page = reverse_lazy('welcome')
+    next_page = reverse_lazy('dashboard')
 
 
 class UserEditView(views.UpdateView):
