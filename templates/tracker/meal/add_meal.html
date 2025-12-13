@@ -19,31 +19,36 @@
     <form class="searchbar" method="get" id="search-form">
       <input type="hidden" name="name" id="hidden-name">
       {{ search_form }}
-      <button type="submit" name="srch_btn">Search</button>
+      <button type="submit" name="srch_btn">Search DB</button>
+      <button type="submit" name="usda_srch_btn">Search Online</button>
     </form>
 
+  {% if all_foods %}
   <ul>
+    {% if recent_food %}
     <li>
       <strong>Most recently added food:</strong>
-      {{ recent_food.name }}
+      {{ recent_food.name }} - {{ recent_food.calories }} kcal
       <button type="button" class="add-food-btn" data-food-id="{{ recent_food.id }}" data-food-name="{{ recent_food.name }}">Add</button>
     </li>
+    {% endif %}
   {% for food in all_foods %}
     <li>
-      {{ food.name }}
+      {{ food.name }} - {{ food.calories }} kcal
       <button type="button" class="add-food-btn" data-food-id="{{ food.id }}" data-food-name="{{ food.name }}">Add</button>
     </li>
     {% empty %}
     <li>No local foods found</li>
   {% endfor %}
   </ul>
+  {% endif %}
 
   {% if usda_results %}
     <h3>Foods found online:</h3>
     <ul>
         {% for f in usda_results %}
             <li>
-                {{ f.name }} — {{ f.calories }} cal
+                {{ f.name }} — {{ f.calories }} kcal
                 <a href="{% url 'add db food' %}?idx={{ forloop.counter0 }}">Add</a>
             </li>
         {% endfor %}

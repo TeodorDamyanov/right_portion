@@ -36,14 +36,7 @@ def dashboard(request):
         .annotate(times_used=Count('id'))
         .order_by('-times_used')[:5]
     )
-
-    # top_meals = (
-    #     MealFood.objects
-    #     .filter(meal__user=request.user)
-    #     .values('meal__name')
-    #     .annotate(times_used=Count('id'))
-    #     .order_by('-times_used')[:5]
-    # )
+    
 
     if meals_by_day:
         avg_calories = sum(m['total_calories'] or 0 for m in meals_by_day) / len(meals_by_day)

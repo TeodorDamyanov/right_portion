@@ -17,14 +17,19 @@ def add_meal(request):
     
     search_form = SearchForm(request.GET or None)
     request.session.pop("search_result", None)
-    if search_query:
+
+    if search_query and request.GET.get("srch_btn") == "":
+        recent_food = ""
         all_foods = all_foods.filter(name__icontains=search_query)
-        if not all_foods.exists() and search_query != "":
-            usda_data = fetch_usda_foods(search_query)
-            if usda_data:
-                if isinstance(usda_data, list):
-                    request.session["search_result"] = usda_data
-                    all_foods = []
+
+    if search_query and request.GET.get("usda_srch_btn") == "":
+        recent_food = ""
+        usda_data = fetch_usda_foods(search_query)
+        if usda_data:
+            if isinstance(usda_data, list):
+                request.session["search_result"] = usda_data
+                all_foods = []
+
 
     if request.method == "GET":
         form = MealForm(initial={"name": meal_name})
@@ -79,6 +84,9 @@ def add_db_food(request):
         carbs=data["carbs"],
         fats=data["fat"],
     )
+
+    # make food if in db dont add
+
     food.user = request.user
     food.save()
 
