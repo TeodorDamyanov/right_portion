@@ -97,16 +97,31 @@ def add_db_food(request):
 @login_required
 def edit_meal(request, meal_slug):
     meal = Meal.objects.get(slug=meal_slug)
-    all_foods = Food.objects.filter(user=request.user)
+    all_foods = Food.objects.filter(user=request.user).order_by('-is_favorite')
+    recent_food = all_foods.order_by('-date').first()
+    search_query = request.GET.get("search", "")
     search_form = SearchForm()
 
     form = MealForm(request.POST or None, instance=meal)
 
-    search_query = request.GET.get("search", "")
-    if search_query:
+    search_form = SearchForm(request.GET or None)
+    request.session.pop("search_result", None)
+
+    if search_query and request.GET.get("srch_btn") == "":
+        recent_food = ""
         all_foods = all_foods.filter(name__icontains=search_query)
 
+    if search_query and request.GET.get("usda_srch_btn") == "":
+        recent_food = ""
+        usda_data = fetch_usda_foods(search_query)
+        if usda_data:
+            if isinstance(usda_data, list):
+                request.session["search_result"] = usda_data
+                all_foods = []
+
+
     if request.method == "POST":
+        form = MealForm(request.POST, instance=meal)
 
         if form.is_valid():
             form.save()
@@ -129,12 +144,15 @@ def edit_meal(request, meal_slug):
         
     meal_food_ids = set(meal.meal_foods.values_list("food_id", flat=True))
 
+    all_foods = all_foods[:5]
     context = {
         "meal": meal,
         "form": form,
         "all_foods": all_foods,
         "search_form": search_form,
         "meal_food_ids": meal_food_ids,
+        "recent_food": recent_food,
+        "usda_results": request.session.get("search_result", []),
     }
 
     return render(request, "tracker/meal/meal-edit-page.html", context)

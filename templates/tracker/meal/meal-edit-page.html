@@ -15,28 +15,46 @@
 
     <button type="submit" id="save-btn">Save Changes</button>
 </form>
-
 <h3>Add More Foods</h3>
 
 <form class="searchbar" method="get" id="search-form">
-    {{ search_form }}
-    <button type="submit" name="srch_btn">Search</button>
-</form>
+      <input type="hidden" name="name" id="hidden-name">
+      {{ search_form }}
+      <button type="submit" name="srch_btn">Search DB</button>
+      <button type="submit" name="usda_srch_btn">Search Online</button>
+    </form>
 
-<ul>
+  {% if all_foods %}
+  <ul>
+    {% if recent_food %}
+    <li>
+      <strong>Most recently added food:</strong>
+      {{ recent_food.name }} - {{ recent_food.calories }} kcal
+      <button type="button" class="add-food-btn" data-food-id="{{ recent_food.id }}" data-food-name="{{ recent_food.name }}">Add</button>
+    </li>
+    {% endif %}
   {% for food in all_foods %}
     <li>
-        {% if food.id in meal_food_ids %}
-            <button disabled>{{ food.name }}</button>
-        {% else %}
-            {{ food.name }}
-            <button type="button" class="add-food-btn" data-food-id="{{ food.id }}" data-food-name="{{ food.name }}">Add</button>
-        {% endif %}
+      {{ food.name }} - {{ food.calories }} kcal
+      <button type="button" class="add-food-btn" data-food-id="{{ food.id }}" data-food-name="{{ food.name }}">Add</button>
     </li>
-  {% empty %}
-    <li>No foods found.</li>
+    {% empty %}
+    <li>No local foods found</li>
   {% endfor %}
-</ul>
+  </ul>
+  {% endif %}
+
+  {% if usda_results %}
+    <h3>Foods found online:</h3>
+    <ul>
+        {% for f in usda_results %}
+            <li>
+                {{ f.name }} — {{ f.calories }} kcal
+                <a href="{% url 'add db food' %}?idx={{ forloop.counter0 }}">Add</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
 
 
 <script>
