@@ -27,6 +27,7 @@ def add_meal(request):
         usda_data = fetch_usda_foods(search_query)
         if usda_data:
             if isinstance(usda_data, list):
+                search_food(request, usda_data)
                 request.session["search_result"] = usda_data
                 all_foods = []
 
@@ -296,3 +297,16 @@ def delete_meal_template(request, template_id):
         return redirect('templates')
 
     return render(request, 'tracker/meal/meal-template-delete-page.html', {'template': template})
+
+def search_food(request, usda_data):
+    food_names = list(Food.objects.values_list('name', flat=True))
+    for f in usda_data:
+        if f['name'] in food_names:
+            foods = Food.objects.filter(name=f['name'], user=request.user)
+            print(f)
+            for food in foods:
+                print(food)
+                if f['calories'] == food.calories and f['protein'] == food.protein and f['carbs'] == food.carbs and f['fat'] == food.fats:
+                    usda_data.remove(f)
+    print(usda_data)
+    return usda_data
