@@ -14,7 +14,7 @@ def fetch_usda_foods(query):
     params = {
         "api_key": settings.USDA_API_KEY,
         "query": query,
-        "pageSize": 5,
+        "pageSize": 10,
     }
 
     search_res = requests.get(search_url, params=params).json()
