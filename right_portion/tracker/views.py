@@ -75,7 +75,7 @@ def add_db_food(request):
     data_list = request.session.get("search_result", [])
 
     if not data_list or idx >= len(data_list):
-        return redirect("add_meal")
+        return redirect("add meal")
 
     data = data_list[idx]
 
@@ -87,13 +87,14 @@ def add_db_food(request):
         fats=data["fat"],
     )
 
-    # make food if in db dont add
-
     food.user = request.user
     food.save()
 
     request.session.pop("search_result", None)
-    return redirect("add meal")
+    if request.path[9] + request.path[10] + request.path[11] + request.path[12] == "edit":
+        return redirect("dashboard")
+    else:
+        return redirect("add meal") # to fix
 
 
 @login_required
@@ -303,11 +304,10 @@ def delete_meal_template(request, template_id):
 
 def search_food(request, usda_data):
     food_names = list(Food.objects.values_list('name', flat=True))
-    print(usda_data)
     for f in usda_data:
         if f['name'] in food_names:
             foods = Food.objects.filter(name=f['name'], user=request.user)
             for food in foods:
                 if food.calories == int(f['calories']) and food.protein == int(f['protein']) and food.carbs == int(f['carbs']) and food.fats == int(f['fat']):
-                    print(usda_data.remove(f))
+                    usda_data.remove(f)
     return usda_data
