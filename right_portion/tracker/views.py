@@ -70,7 +70,7 @@ def add_meal(request):
 
 
 @login_required
-def add_db_food(request):
+def add_db_food(request, add_edit):
     idx = int(request.GET.get("idx", 0))
     data_list = request.session.get("search_result", [])
 
@@ -91,17 +91,17 @@ def add_db_food(request):
     food.save()
 
     request.session.pop("search_result", None)
-    if request.path[9] + request.path[10] + request.path[11] + request.path[12] == "edit":
-        return redirect("dashboard")
+    if add_edit == "add":
+        return redirect("add meal")
     else:
-        return redirect("add meal") # to fix
+        return redirect("dashboard")
 
 
 @login_required
 def edit_meal(request, meal_slug):
     meal = Meal.objects.get(slug=meal_slug)
     all_foods = Food.objects.filter(user=request.user).order_by('-is_favorite')
-    recent_food = all_foods.order_by('-date').first()
+    recent_food = all_foods.order_by('-date').first() ## to fix
     search_query = request.GET.get("search", "")
     search_form = SearchForm()
 

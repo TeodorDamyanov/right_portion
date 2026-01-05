@@ -49,7 +49,7 @@
         {% for f in usda_results %}
             <li>
                 {{ f.name }} — {{ f.calories }} kcal
-                <a href="{% url 'add db food' %}?idx={{ forloop.counter0 }}">Add</a>
+                <a href="{% url 'add db food' 'add' %}?idx={{ forloop.counter0 }}">Add</a>
             </li>
         {% endfor %}
     </ul>
