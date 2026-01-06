@@ -11,7 +11,7 @@ from ..usda import fetch_usda_foods
 @login_required
 def add_meal(request):
     all_foods = Food.objects.filter(user=request.user).order_by('-is_favorite')
-    recent_food = all_foods.order_by('-date').first()
+    recent_food = all_foods.order_by('-id').first()
     search_query = request.GET.get("search", "")
     meal_name = request.GET.get("name", "New Meal")
     
@@ -101,7 +101,7 @@ def add_db_food(request, add_edit):
 def edit_meal(request, meal_slug):
     meal = Meal.objects.get(slug=meal_slug)
     all_foods = Food.objects.filter(user=request.user).order_by('-is_favorite')
-    recent_food = all_foods.order_by('-date').first() ## to fix
+    recent_food = all_foods.order_by('-id').first()
     search_query = request.GET.get("search", "")
     search_form = SearchForm()
 
