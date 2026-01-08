@@ -8,6 +8,7 @@ from .forms import MealForm, FoodForm
 
 from ..usda import fetch_usda_foods
 
+
 @login_required
 def add_meal(request):
     all_foods = Food.objects.filter(user=request.user).order_by('-is_favorite')
@@ -163,7 +164,6 @@ def edit_meal(request, meal_slug):
     return render(request, "tracker/meal/meal-edit-page.html", context)
 
 
-
 @login_required
 def delete_meal(request, meal_slug):
     meal = Meal.objects.filter(slug=meal_slug)
@@ -173,7 +173,6 @@ def delete_meal(request, meal_slug):
         return redirect('dashboard')
 
     return render(request, 'tracker/meal/meal-delete-page.html', {'meal': meal})
-
 
 
 @login_required
@@ -242,6 +241,7 @@ def save_meal_as_template(request, meal_slug):
 
     return redirect('dashboard')
 
+
 @login_required
 def add_meal_from_template(request, template_id):
     template = MealTemplate.objects.get(id=template_id, user=request.user)
@@ -302,6 +302,7 @@ def delete_meal_template(request, template_id):
 
     return render(request, 'tracker/meal/meal-template-delete-page.html', {'template': template})
 
+
 def search_food(request, usda_data):
     food_names = list(Food.objects.values_list('name', flat=True))
     for f in usda_data:
@@ -311,3 +312,4 @@ def search_food(request, usda_data):
                 if food.calories == int(f['calories']) and food.protein == int(f['protein']) and food.carbs == int(f['carbs']) and food.fats == int(f['fat']):
                     usda_data.remove(f)
     return usda_data
+

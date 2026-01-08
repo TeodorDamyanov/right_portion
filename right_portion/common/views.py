@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from right_portion.tracker.models import Meal, MealFood, Plan
 
+
 @login_required
 def dashboard(request):
     today = timezone.localdate()
