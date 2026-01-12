@@ -1,0 +1,32 @@
+html {
+    background-color: #eee2d0;
+}
+
+main {
+    margin-top: 1em;
+}
+
+.navbar {
+    /* position: fixed;
+    z-index: 100000; */
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: rgb(232, 212, 146);
+    width: 100%;
+    border: 1px solid rgb(218, 217, 217);
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+.nav-links ul {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.nav-links ul li {
+    margin-inline: 1em;
+}
