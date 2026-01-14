@@ -1,5 +1,15 @@
+/* #C1B098
+#E9D2F4
+#9B9B93
+#39393A
+#63B0CD 
+#eee2d0*/
+
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+
 html {
-    background-color: #eee2d0;
+    background-color: #9B9B93;
+    font-family: "Jost", sans-serif;
 }
 
 main {
@@ -11,22 +21,46 @@ main {
     z-index: 100000; */
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    background: rgb(232, 212, 146);
+    justify-content: space-between;
+    background: #C1B098;
     width: 100%;
-    border: 1px solid rgb(218, 217, 217);
+    border-radius: 0.4em;
+}
+
+.logo {
+    margin-left: 3em;
 }
 
 .navbar a {
     text-decoration: none;
+    color: #39393A;
+    font: 20px "Jost", sans-serif;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+}
+
+.navbar a i {
+    font-style: normal;
+}
+
+.nav-links {
+    margin-right: 2em;
 }
 
 .nav-links ul {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+    list-style: none;
+    padding-left: 0em;
+    gap: 1em;
 }
 
 .nav-links ul li {
     margin-inline: 1em;
+}
+
+.footer {
+    text-align: center;
+    font-size: 0.72em;
 }
