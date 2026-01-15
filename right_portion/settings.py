@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,14 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-egs1y_lt5f^9c*^w0(rl!=7=ya(v)(fg+)q*z1k$-ppuj=25-*'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = []
-
-# venv\Scripts\activate
 
 
 # Application definition
@@ -55,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'right_portion.urls'
+ROOT_URLCONF = os.getenv("ROOT_URLCONF")
 
 TEMPLATES = [
     {
@@ -72,17 +74,17 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'right_portion.wsgi.application'
+WSGI_APPLICATION = os.getenv("WSGI_APPLICATION")
 
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'right_portion_db',
-        'USER': 'postgres',
-        'PASSWORD': 'postgresTedi',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv("NAME"),
+        'USER': os.getenv("USER"),
+        'PASSWORD': os.getenv("PASSWORD"),
+        'HOST': os.getenv("HOST"),
+        'PORT': os.getenv("PORT"),
     }
 }
 
@@ -106,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'accounts.RPUser'
+AUTH_USER_MODEL = os.getenv("AUTH_USER_MODEL")
 
 
 # Internationalization
@@ -114,7 +116,7 @@ AUTH_USER_MODEL = 'accounts.RPUser'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = "Europe/Sofia"
+TIME_ZONE = os.getenv("TIME_ZONE")
 
 USE_I18N = True
 
@@ -124,7 +126,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = os.getenv("STATIC_URL")
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -141,4 +143,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
   }
 }
 
-USDA_API_KEY = "iTlBNajwHX64qen9Cym388B92BbDE5f4GHMZDGpR"
+USDA_API_KEY = os.getenv("USDA_API_KEY")
