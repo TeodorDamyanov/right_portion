@@ -1,10 +1,13 @@
 .dashboard-charts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15em, 15em));
-    gap: 8em;
+    grid-template-columns: repeat(auto-fit, minmax(17em, 17em));
+    gap: 6.5em;
     justify-content: center;
 }
 
 .card {
-    background-color: white;
+    background-color: #FAF9F6;
+    padding-inline: 2em;
+    text-align: center;
+    border-radius: 3em;
 }

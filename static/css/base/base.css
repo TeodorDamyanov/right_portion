@@ -1,17 +1,13 @@
-/* #C1B098 khaki beige - beige
-#E9D2F4 thistle - pink
-#9B9B93 grey olive - olive
-#39393A graphite - dark grey
-#63B0CD pacific blue - blue
-#eee2d0*/
+@import url("https://fonts.googleapis.com/css2?family=Special+Gothic:wght@400..700&display=swap&family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
 
-/* &family=Jost:ital,wght@0,100..900;1,100..900&display=swap */
-
-@import url("https://fonts.googleapis.com/css2?family=Special+Gothic:wght@400..700&display=swap");
+/* * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
 
 html {
-    background-color: #9B9B93;
-    /* font-family: "Jost", sans-serif; */
+    background-color: #9B9B93; /* #EEE2D0 */
     font-family: "Special Gothic", sans-serif;
 }
 
