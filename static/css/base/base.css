@@ -1,15 +1,18 @@
-/* #C1B098
-#E9D2F4
-#9B9B93
-#39393A
-#63B0CD 
+/* #C1B098 khaki beige - beige
+#E9D2F4 thistle - pink
+#9B9B93 grey olive - olive
+#39393A graphite - dark grey
+#63B0CD pacific blue - blue
 #eee2d0*/
 
-@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
+/* &family=Jost:ital,wght@0,100..900;1,100..900&display=swap */
+
+@import url("https://fonts.googleapis.com/css2?family=Special+Gothic:wght@400..700&display=swap");
 
 html {
     background-color: #9B9B93;
-    font-family: "Jost", sans-serif;
+    /* font-family: "Jost", sans-serif; */
+    font-family: "Special Gothic", sans-serif;
 }
 
 main {
@@ -34,8 +37,8 @@ main {
 .navbar a {
     text-decoration: none;
     color: #39393A;
-    font: 20px "Jost", sans-serif;
-    letter-spacing: 0.12em;
+    font-size: 20px;
+    letter-spacing: 0.07em;
     font-weight: 500;
 }
 

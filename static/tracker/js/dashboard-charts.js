@@ -4,19 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const {
     totalCalories,
     calorieGoal,
-    caloriePercent,
 
     totalProtein,
     proteinGoal,
-    proteinPercent,
 
     totalCarbs,
     carbsGoal,
-    carbsPercent,
 
     totalFats,
     fatsGoal,
-    fatsPercent,
 
     caloriesBackColor,
     proteinBackColor,
@@ -33,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
       daily = 0
     }
 
-    let secColor = "#8cc1b2ff"
+    let secColor = "#84aea9"
     if (backColor == "#B7B7B7") {
       secColor = "#B7B7B7"
     }

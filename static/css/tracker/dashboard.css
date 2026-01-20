@@ -1,0 +1,10 @@
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15em, 15em));
+    gap: 8em;
+    justify-content: center;
+}
+
+.card {
+    background-color: white;
+}

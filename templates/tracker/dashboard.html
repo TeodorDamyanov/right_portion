@@ -5,32 +5,32 @@
 
   <h2>Your day at a glance</h2>
 
-    <div class="dashboard-charts" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(15em, 15em)); gap:4em; align-items:start; margin-bottom: 30px;">
+    <div class="dashboard-charts">
 
-    <div class="card p-3">
-      <h3>Calories {{ total_calories }} / {{ plan.daily_calories|default:"–" }} kcal</h3>
-      <canvas id="calorieChart"></canvas>
-      <h4>{{ calories_percent|message_perc }}</h4>
-    </div>
+      <div class="card">
+        <h3>Calories {{ total_calories }} / {{ plan.daily_calories|default:"–" }} kcal</h3>
+        <canvas id="calorieChart"></canvas>
+        <h4>{{ calories_percent|message_perc }}</h4>
+      </div>
 
-    <div class="card p-3">
-      <h3>Protein {{ total_protein }} / {{ plan.protein_goal|default:"–" }} g</h3>
-      <canvas id="proteinChart"></canvas>
-      <h4>{{ protein_percent|message_perc }}</h4>
-    </div>
+      <div class="card">
+        <h3>Protein {{ total_protein }} / {{ plan.protein_goal|default:"–" }} g</h3>
+        <canvas id="proteinChart"></canvas>
+        <h4>{{ protein_percent|message_perc }}</h4>
+      </div>
 
-    <div class="card p-3">
-      <h3>Carbs {{ total_carbs }} / {{ plan.carbs_goal|default:"–" }} g</h3>
-      <canvas id="carbsChart"></canvas>
-      <h4>{{ carbs_percent|message_perc }}</h4>
-    </div>
+      <div class="card">
+        <h3>Carbs {{ total_carbs }} / {{ plan.carbs_goal|default:"–" }} g</h3>
+        <canvas id="carbsChart"></canvas>
+        <h4>{{ carbs_percent|message_perc }}</h4>
+      </div>
 
-    <div class="card p-3">
-      <h3>Fats {{ total_fats }} / {{ plan.fats_goal|default:"–" }} g</h3>
-      <canvas id="fatsChart"></canvas>
-      <h4>{{ fats_percent|message_perc }}</h4>
+      <div class="card">
+        <h3>Fats {{ total_fats }} / {{ plan.fats_goal|default:"–" }} g</h3>
+        <canvas id="fatsChart"></canvas>
+        <h4>{{ fats_percent|message_perc }}</h4>
+      </div>
     </div>
-  </div>
 
   <h3>Weekly Summary</h3>
   <p>Average daily calories (last 7 days): <strong>{{ avg_calories }}</strong></p>
