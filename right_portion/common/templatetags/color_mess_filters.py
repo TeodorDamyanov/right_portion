@@ -4,8 +4,8 @@ register = template.Library()
 @register.filter
 def color_chart(percent):
         if not percent:
-            color = "#84AEA9" #B7B7B7
-        elif percent <= 100.0:
+            color = "#B6D1CE" #B7B7B7 #84AEA9
+        elif percent > 0.0 and percent <= 100.0:
             color = "#219180"
         elif percent <= 110.0:
             color = "#E1BF00"

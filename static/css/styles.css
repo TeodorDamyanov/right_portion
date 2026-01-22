@@ -1,4 +1,6 @@
 @import './base/base.css';
+@import './base/welcome.css';
+@import './accounts/login-register.css';
 @import './tracker/dashboard.css';
 
 /* #C1B098 khaki beige - khaki

@@ -1,0 +1,41 @@
+.log-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-register {
+    background-color: #63B0CD;
+    text-align: center;
+    width: 50%;
+    min-height: 500px;
+    height: auto;
+    padding: 1em;
+    border: 1px #FAF9F6 solid;
+    border-radius: 1em;
+}
+
+.login-register form {
+    margin-block: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    align-items: center;
+}
+
+.login-register form input, .login-register button {
+    width: 480px;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.login-register button {
+    min-width: 510px;
+    transition: background-color 0.3s ease;
+}
+
+.login-register button:hover {
+    background-color: white;
+    transition: background-color 0.3s ease;
+}

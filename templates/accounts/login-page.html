@@ -1,11 +1,10 @@
 {% extends 'base/base.html' %}
 {% load custom_filters %}
-{% load static %}
 {% block content %}
-<main>
+<main class="log-main">
 
-    <div class="login-register-div">
-        <div class="login-register-box">
+    <div class="login-register">
+        <div>
             <h1>Right Portion</h1>
 
             <form action="{% url 'login user' %}" method="post">
@@ -25,6 +24,5 @@
             <p>Don't have account? <a href="{% url 'register user' %}">Register</a></p>
         </div>
     </div>
-
 </main>
 {% endblock %}
