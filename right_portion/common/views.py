@@ -15,7 +15,8 @@ def dashboard(request):
     recent_meals = Meal.objects.filter(user=request.user, date__range=[week_ago, today])
 
     meals = Meal.objects.filter(user=request.user, date=today)
-    plan = Plan.objects.filter(user=request.user).first()
+    # plan = Plan.objects.filter(user=request.user).first()
+    plan = Plan.objects.first()
 
     meals_by_day = (
         recent_meals
@@ -29,7 +30,7 @@ def dashboard(request):
             )
         )
     )
-
+ 
     top_foods = (
         MealFood.objects
         .filter(meal__user=request.user)
