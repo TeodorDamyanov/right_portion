@@ -2,8 +2,11 @@
 {% load static %}
 {% load color_mess_filters %}
 {% block content %}
+<main class="dash">
 
-  <h2>Your day at a glance</h2>
+  <div class="your_day">
+    <h1>Your day at a glance</h1>
+  </div>
 
     <div class="dashboard-charts">
 
@@ -32,9 +35,12 @@
       </div>
     </div>
 
+  <div>
   <h3>Weekly Summary</h3>
   <p>Average daily calories (last 7 days): <strong>{{ avg_calories }}</strong></p>
+  </div>
 
+  <div>
     {% if streak > 1 %}
       <p>🔥 You’ve logged meals <strong>{{ streak }}</strong> days in a row!</p>
     {% elif streak == 1 %}
@@ -42,7 +48,9 @@
     {% else %}
       <p>📅 Start logging meals to build your streak!</p>
     {% endif %}
+  </div>
 
+  <div>
     <h3>Meals:</h3>
     {% for m in meals %}
     <p>{{ m.name }}</p>
@@ -62,8 +70,9 @@
 
     {% endfor %}
     <a href="{% url 'templates' %}" >All Templates</a>
+    </div>
 
-    <div>
+    <div class="top_foods">
       <h3>Top Foods</h3>
       {% if top_foods %}
 
@@ -119,4 +128,5 @@
       fatsBackColor: "{{ fats_percent|color_chart }}",
     };
   </script>
+</main>
 {% endblock %}

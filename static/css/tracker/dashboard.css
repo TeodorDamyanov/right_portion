@@ -1,3 +1,8 @@
+.dash div {
+    text-align: center;
+
+}
+
 .dashboard-charts {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(17em, 17em));
@@ -10,4 +15,23 @@
     padding-inline: 2em;
     text-align: center;
     border-radius: 3em;
+}
+
+.dash .your_day {
+    text-align: center;
+    justify-items: center;
+}
+
+.dash .your_day h1 {
+    background-color: #39393A;
+    border-radius: 50%;
+    width: 40%;
+    color: #E9D2F4;
+    font-size: 48px;
+    padding-block: 1.6em 1.8em;
+}
+
+.top_foods ul {
+    list-style-type: none;
+    padding-left: 0;
 }
