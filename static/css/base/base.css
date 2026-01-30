@@ -23,7 +23,6 @@ html, body {
 
 main {
     flex: 1;
-    margin-top: 1em;
 }
 
 .navbar {
@@ -34,19 +33,30 @@ main {
     justify-content: space-between;
     background: #C1B098;
     width: 100%;
-    border-radius: 0.4em;
+    padding-block: 0.7em;
 }
 
 .logo {
     margin-left: 3em;
 }
 
+/* .profile {
+    border: 5px solid black;
+    border-radius: 10px;
+    padding-block: 0;
+}
+
+.profile a {
+    padding-block: 0px;
+} */
+
 .navbar a {
     text-decoration: none;
     color: #39393A;
-    font-size: 20px;
+    font-size: 24px;
     letter-spacing: 0.07em;
     font-weight: 500;
+    padding-block: 1em;
 }
 
 .navbar a i {
