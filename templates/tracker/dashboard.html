@@ -35,13 +35,12 @@
       </div>
     </div>
 
+
+  <div class="dash-div">
   <div>
   <h3>Weekly Summary</h3>
   <p>Average daily calories (last 7 days): <strong>{{ avg_calories }}</strong></p>
-  </div>
-
-  <div>
-    {% if streak > 1 %}
+  {% if streak > 1 %}
       <p>🔥 You’ve logged meals <strong>{{ streak }}</strong> days in a row!</p>
     {% elif streak == 1 %}
       <p>✅ You logged meals today!</p>
@@ -78,8 +77,10 @@
 
         <ul>
           {% for food in top_foods %}
+          <span>
             <li>{{ food.food__name }} – {{ food.times_used }} time{{ food.times_used|pluralize }}</li>
-            <a href="{% url 'food details' food.food__slug %}" >Food Details</a>
+              <a href="{% url 'food details' food.food__slug %}" >Food Details</a>
+          </span>
           {% endfor %}
         </ul>
         
@@ -87,6 +88,8 @@
         <p>No foods logged yet this week.</p>
       {% endif %}
     </div>
+    </div>
+
 
     {% comment %} <div>
       <h3>Top Meals</h3>

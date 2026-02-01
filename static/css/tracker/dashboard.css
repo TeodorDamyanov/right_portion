@@ -28,9 +28,53 @@
     color: #E9D2F4;
     font-size: 48px;
     padding-block: 2em;
+    margin-block: 2em 3em;
+}
+
+.dash-div {
+    display: flex;
+    justify-content: space-around;
+    margin-block: 9em 1em;
+}
+
+.dash-div div {
+    background-color: #39393A;
+    color: #E9D2F4;
+    width: 400px;
+    min-height: 450px;
+    height: auto;
+    border-radius: 3em;
+}
+
+.dash-div a {
+    background-color: #E9D2F4;
+    color: #39393A;
+    text-decoration: none;
+    padding: 7px;
+    border-radius: 3em;
 }
 
 .top_foods ul {
+    /* background-color: #63B0CD; */
+    text-align: start;
     list-style-type: none;
-    padding-left: 0;
+    margin: 0 3em 3em 3em;
+    border-radius: 4px;
+    padding: 0 1em 0 1em;
+}
+
+.top_foods ul span li {
+    font-weight: 600;
+    margin-left: 3px;
+}
+
+.top_foods ul span {
+    display: flex;
+    margin-bottom: 2em;
+    text-justify: center;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid white;
+    border-radius: 3em;
+    padding: 6px;
 }
