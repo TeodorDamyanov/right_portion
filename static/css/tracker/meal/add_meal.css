@@ -1,0 +1,24 @@
+.add-meal-h2 {
+    background-color: #FAF9F6;
+    margin: 0;
+    padding: 28px;
+}
+
+.add-meal {
+    border: 2px solid #FAF9F6;
+    width: 40%;
+}
+
+#main-form {
+    background-color: #FAF9F6;
+    font-size: 18px;
+    padding: 28px;
+}
+
+#main-form p {
+    margin: 0;
+    display: flex;
+    align-content: center;
+    gap: 1em;
+}
+

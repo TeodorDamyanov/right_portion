@@ -2,6 +2,7 @@
 @import './base/welcome.css';
 @import './accounts/login-register.css';
 @import './tracker/dashboard.css';
+@import './tracker/meal/add_meal.css';
 
 /* #C1B098 khaki beige - khaki
 #E9D2F4 thistle - pink

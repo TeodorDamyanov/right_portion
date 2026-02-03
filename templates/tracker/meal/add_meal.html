@@ -3,7 +3,8 @@
 {% block content %}
 {% load static %}
 {% load custom_filters_2 %}
-  <h2>Add Meal</h2>
+<div class="add-meal">
+  <h2 class="add-meal-h2">Add Meal</h2>
 
   <form method="post" id="main-form">
     {% csrf_token %}
@@ -54,7 +55,7 @@
         {% endfor %}
     </ul>
 {% endif %}
-
+</div>
 <script>
 document.getElementById("search-form").addEventListener("submit", function () {
 
