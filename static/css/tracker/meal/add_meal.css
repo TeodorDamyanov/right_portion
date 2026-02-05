@@ -7,6 +7,8 @@
 .add-meal {
     border: 2px solid #FAF9F6;
     width: 40%;
+    justify-self: center;
+    margin-top: 5em;
 }
 
 #main-form {
@@ -15,10 +17,11 @@
     padding: 28px;
 }
 
-#main-form p {
-    margin: 0;
-    display: flex;
-    align-content: center;
-    gap: 1em;
+#main-form #id_name {
+    font-family: "Special Gothic", sans-serif;
+    font-size: 18px;
 }
 
+#main-form p {
+    margin: 0;
+}
