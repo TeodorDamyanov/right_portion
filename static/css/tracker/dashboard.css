@@ -12,7 +12,6 @@
 .card {
     background-color: #FAF9F6;
     padding-inline: 2em;
-    text-align: center;
     border-radius: 3em;
 }
 
@@ -22,18 +21,24 @@
 }
 
 .dash .your_day h1 {
-    background-color: #39393A;
-    border-radius: 50%;
-    width: 40%;
+    /* background-color: #39393A; */
+    /* border-radius: 50%; */
+    /* width: 40%; */
     color: #E9D2F4;
     font-size: 48px;
-    padding-block: 2em;
-    margin-block: 2em 3em;
+    padding-block: 1.4em;
+    /* padding-block: 2em; */
+    /* margin-block: 2em 3em; */
 }
 
 .dash-div {
-    display: flex;
-    justify-content: space-around;
+    /* display: flex; */
+    display: grid;
+    grid-auto-flow: column;
+    /* grid-template-columns: repeat(auto-fit, minmax(17em, 17em)); */
+    gap: 6.4em;
+    justify-content: center;
+    /* justify-content: space-around; */
     margin-block: 9em 1em;
 }
 
@@ -52,6 +57,10 @@
     text-decoration: none;
     padding: 7px;
     border-radius: 3em;
+}
+
+.meals {
+    
 }
 
 .top_foods ul {

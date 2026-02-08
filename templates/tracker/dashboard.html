@@ -49,23 +49,27 @@
     {% endif %}
   </div>
 
-  <div>
+  <div class="meals">
     <h3>Meals:</h3>
     {% for m in meals %}
     <p>{{ m.name }}</p>
     <p>Includes:</p>
 
       {% for mf in m.meal_foods.all %}
+      <span>
         <p>{{ mf.food.name }} - {{ mf.quantity }} grams</p>
         <a href="{% url 'food details' mf.food.slug %}" >Food Details</a>
+      </span>
       {% empty %}
         <p>No foods added to this meal yet.</p>
       {% endfor %}
 
+      <span>
       <p>A total of {{ m.total_calories }} calories</p>
       <a href="{% url 'meal edit' m.slug %}" >Edit Meal</a>
       <a href="{% url 'meal delete' m.slug %}" >Delete Meal</a>
       <a href="{% url 'save meal as template' m.slug %}" class="btn btn-secondary">Save as Template</a>
+      </span>
 
     {% endfor %}
     <a href="{% url 'templates' %}" >All Templates</a>

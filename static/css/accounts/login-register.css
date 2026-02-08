@@ -5,6 +5,9 @@
 }
 
 .login-register {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     background-color: #63B0CD;
     text-align: center;
     width: 50%;
@@ -13,6 +16,7 @@
     padding: 1em;
     border: 1px #FAF9F6 solid;
     border-radius: 1em;
+    margin-top: 3em;
 }
 
 .login-register form {
@@ -38,4 +42,9 @@
 .login-register button:hover {
     background-color: white;
     transition: background-color 0.3s ease;
+}
+
+#login {
+   min-height: 400px;
+   margin-top: 5em;
 }
